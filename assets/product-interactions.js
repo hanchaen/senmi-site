@@ -11,11 +11,11 @@
     if (typeof window.senmiTrack === 'function') window.senmiTrack(name, params);
   }
 
-  function selectedItem(option) {
+  function selectedItem(option, quantity) {
     return Object.assign({}, PRODUCT, {
       item_variant: option.value,
       price: Number(option.dataset.price),
-      quantity: 1
+      quantity: quantity
     });
   }
 
@@ -23,17 +23,52 @@
   var totalValue = document.getElementById('product-total');
   var optionError = document.getElementById('option-error');
   var addToCart = document.getElementById('add-to-cart');
+  var buyNow = document.getElementById('cta-main');
+  var priceLabel = document.getElementById('product-price');
+  var decreaseQuantity = document.getElementById('product-quantity-decrease');
+  var increaseQuantity = document.getElementById('product-quantity-increase');
+  var quantityOutput = document.getElementById('product-quantity');
+  var quantity = 1;
 
-  if (optionSelect && totalValue && addToCart) {
+  function updateProductSummary() {
+    var option = optionSelect.options[optionSelect.selectedIndex];
+    quantityOutput.textContent = quantity;
+    if (!option.value) {
+      priceLabel.textContent = 'KRW 28,000';
+      totalValue.textContent = '0 (0개)';
+      return;
+    }
+    var price = Number(option.dataset.price);
+    var totalCount = Number(option.dataset.count) * quantity;
+    priceLabel.textContent = 'KRW ' + price.toLocaleString('ko-KR');
+    totalValue.textContent = (price * quantity).toLocaleString('ko-KR') + '원 (총 ' + totalCount + '개)';
+  }
+
+  function addSelectionToCart(buttonType) {
+    var option = optionSelect.options[optionSelect.selectedIndex];
+    if (!option.value) {
+      optionError.textContent = '구성을 먼저 선택해 주세요.';
+      optionSelect.focus();
+      return;
+    }
+    var item = selectedItem(option, quantity);
+    var cart = [];
+    try { cart = JSON.parse(sessionStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
+    var existing = cart.find(function (entry) { return entry.item_variant === item.item_variant; });
+    if (existing) existing.quantity += quantity;
+    else cart.push(item);
+    sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
+    track('add_to_cart', { currency: 'KRW', value: item.price * item.quantity, button_type: buttonType, items: [item] });
+    location.href = 'cart.html';
+  }
+
+  if (optionSelect && totalValue && addToCart && buyNow) {
     optionSelect.addEventListener('change', function () {
       var option = optionSelect.options[optionSelect.selectedIndex];
       optionError.textContent = '';
-      if (!option.value) {
-        totalValue.textContent = '0 (0개)';
-        return;
-      }
-      var item = selectedItem(option);
-      totalValue.textContent = item.price.toLocaleString('ko-KR') + '원 (' + option.dataset.count + '개 구성)';
+      updateProductSummary();
+      if (!option.value) return;
+      var item = selectedItem(option, quantity);
       track('select_item', {
         item_list_id: 'product_option',
         item_list_name: 'product_option',
@@ -41,23 +76,22 @@
       });
     });
 
-    addToCart.addEventListener('click', function () {
-      var option = optionSelect.options[optionSelect.selectedIndex];
-      if (!option.value) {
-        optionError.textContent = '구성을 먼저 선택해 주세요.';
-        optionSelect.focus();
-        return;
-      }
-      var item = selectedItem(option);
-      var cart = [];
-      try { cart = JSON.parse(sessionStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
-      var existing = cart.find(function (entry) { return entry.item_variant === item.item_variant; });
-      if (existing) existing.quantity += 1;
-      else cart.push(item);
-      sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
-      track('add_to_cart', { currency: 'KRW', value: item.price, items: [item] });
-      location.href = 'cart.html';
+    decreaseQuantity.addEventListener('click', function () {
+      if (quantity === 1) return;
+      var previous = quantity;
+      quantity -= 1;
+      updateProductSummary();
+      track('product_quantity_update', { previous_quantity: previous, new_quantity: quantity, update_method: 'decrease' });
     });
+    increaseQuantity.addEventListener('click', function () {
+      var previous = quantity;
+      quantity += 1;
+      updateProductSummary();
+      track('product_quantity_update', { previous_quantity: previous, new_quantity: quantity, update_method: 'increase' });
+    });
+    addToCart.addEventListener('click', function () { addSelectionToCart('add_to_cart'); });
+    buyNow.addEventListener('click', function () { addSelectionToCart('buy_now'); });
+    updateProductSummary();
   }
 
   document.querySelectorAll('.faq-toggle').forEach(function (button, index) {
