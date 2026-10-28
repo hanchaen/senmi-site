@@ -6,10 +6,27 @@
     item_category: 'cheek_patch'
   };
   var CART_KEY = 'senmi_cart';
+  var SELECTION_KEY = 'senmi_last_selection';
 
   function track(name, params) {
     if (typeof window.senmiTrack === 'function') window.senmiTrack(name, params);
   }
+
+  track('view_item', {
+    currency: 'KRW',
+    value: 28000,
+    items: [Object.assign({}, PRODUCT, { price: 28000, quantity: 1 })]
+  });
+
+  document.querySelectorAll('[data-track-content]').forEach(function (element) {
+    element.addEventListener('click', function () {
+      track('select_content', {
+        content_type: element.dataset.trackType,
+        content_id: element.dataset.trackContent,
+        placement: element.dataset.trackPlacement
+      });
+    });
+  });
 
   function selectedItem(option, quantity) {
     return Object.assign({}, PRODUCT, {
@@ -52,6 +69,7 @@
       return;
     }
     var item = selectedItem(option, quantity);
+    sessionStorage.setItem(SELECTION_KEY, JSON.stringify(item));
     var cart = [];
     try { cart = JSON.parse(sessionStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
     var existing = cart.find(function (entry) { return entry.item_variant === item.item_variant; });
@@ -69,6 +87,7 @@
       updateProductSummary();
       if (!option.value) return;
       var item = selectedItem(option, quantity);
+      sessionStorage.setItem(SELECTION_KEY, JSON.stringify(item));
       track('select_item', {
         item_list_id: 'product_option',
         item_list_name: 'product_option',
@@ -81,13 +100,15 @@
       var previous = quantity;
       quantity -= 1;
       updateProductSummary();
-      track('product_quantity_update', { previous_quantity: previous, new_quantity: quantity, update_method: 'decrease' });
+      var option = optionSelect.options[optionSelect.selectedIndex];
+      track('product_quantity_update', { item_id: PRODUCT.item_id, item_variant: option.value || 'not_selected', previous_quantity: previous, new_quantity: quantity, update_method: 'decrease' });
     });
     increaseQuantity.addEventListener('click', function () {
       var previous = quantity;
       quantity += 1;
       updateProductSummary();
-      track('product_quantity_update', { previous_quantity: previous, new_quantity: quantity, update_method: 'increase' });
+      var option = optionSelect.options[optionSelect.selectedIndex];
+      track('product_quantity_update', { item_id: PRODUCT.item_id, item_variant: option.value || 'not_selected', previous_quantity: previous, new_quantity: quantity, update_method: 'increase' });
     });
     addToCart.addEventListener('click', function () { addSelectionToCart('add_to_cart'); });
     buyNow.addEventListener('click', function () { addSelectionToCart('buy_now'); });
@@ -102,7 +123,6 @@
       answer.hidden = expanded;
       track(expanded ? 'faq_close' : 'faq_open', {
         faq_id: button.dataset.faqId,
-        faq_question: button.textContent.trim(),
         faq_position: index + 1
       });
     });
