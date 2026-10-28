@@ -7,9 +7,14 @@
 | 파일 | 역할 |
 |---|---|
 | `index.html` | 랜딩페이지 본문 |
+| `cart.html` | 옵션 선택 후 사용하는 실습용 장바구니 |
 | `result.html` | 신청 후 나오는 결과(전환 완료) 페이지 |
 | `assets/site.css` | 공통 디자인 |
 | `assets/privacy.js` | 신청 폼 처리 + 개인정보 안내 팝업 |
+| `assets/product-interactions.js` | 상품 옵션·FAQ·후기 모달 처리 |
+| `assets/cart.js` | 장바구니 표시·수량·삭제 처리 |
+| `assets/analytics.js` | GA4 이벤트 안전 호출 함수 |
+| `IMPLEMENTATION_PROMPT.md` | 기능 요구사항과 재사용 가능한 구현 프롬프트 |
 | `assets/` 안 이미지 | 히어로·제품 이미지 |
 | `robots.txt`, `sitemap.xml` | 검색엔진용 (Day 28~29) |
 
@@ -26,6 +31,7 @@
 ## 바꾸면 안 되는 것
 
 - `id="cta-main"`, `id="lead-form"`, `id="cta-submit"`: GA4·픽셀 이벤트가 이 이름을 씁니다.
+- `id="product-option"`, `id="add-to-cart"`: 상품 옵션과 장바구니 기능이 이 이름을 씁니다.
 - `assets/privacy.js`의 "입력값을 지우고 result.html로 이동" 부분.
 
 ## 분석 도구 붙이는 자리
