@@ -68,11 +68,27 @@
 
   var continueShopping = document.getElementById('continue-shopping');
   var newsSignup = document.getElementById('cart-news-signup');
+  var headerHomeText = document.getElementById('cart-header-home-text');
+  var headerHomeLogo = document.getElementById('cart-header-home-logo');
+  var headerNews = document.getElementById('cart-header-news');
+  var emptyCartShop = document.getElementById('empty-cart-shop');
   if (continueShopping) continueShopping.addEventListener('click', function () {
     track('select_content', { content_type: 'navigation', content_id: 'cart_continue_shopping', placement: 'cart', destination: 'product' });
   });
   if (newsSignup) newsSignup.addEventListener('click', function () {
     track('select_content', { content_type: 'cta', content_id: 'cart_news_signup', placement: 'cart', destination: 'apply' });
+  });
+  if (headerHomeText) headerHomeText.addEventListener('click', function () {
+    track('select_content', { content_type: 'navigation', content_id: 'cart_header_home_text', placement: 'cart_header' });
+  });
+  if (headerHomeLogo) headerHomeLogo.addEventListener('click', function () {
+    track('select_content', { content_type: 'navigation', content_id: 'cart_header_home_logo', placement: 'cart_header' });
+  });
+  if (headerNews) headerNews.addEventListener('click', function () {
+    track('select_content', { content_type: 'cta', content_id: 'cart_header_news', placement: 'cart_header', destination: 'apply' });
+  });
+  if (emptyCartShop) emptyCartShop.addEventListener('click', function () {
+    track('select_content', { content_type: 'navigation', content_id: 'empty_cart_shop', placement: 'empty_cart' });
   });
 })();
 
