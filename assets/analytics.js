@@ -5,7 +5,7 @@
       var eventParams = Object.assign({}, params || {});
       if (debugMode) eventParams.debug_mode = true;
       window.gtag('event', eventName, eventParams);
-      if (window.fbq && eventName !== 'page_view' && eventName.indexOf('scroll') === -1) {
+      if (window.fbq && eventName !== 'page_view' && !/scroll/i.test(eventName)) {
         var metaEventNames = {
           generate_lead: 'Lead',
           sign_up: 'CompleteRegistration',
@@ -18,11 +18,11 @@
         };
         var metaEventName = metaEventNames[eventName];
         if (eventName === 'purchase') {
-          window.fbq('track', 'Purchase', { value: eventParams.value, currency: 'KRW' });
+          fbq('track', 'Purchase', { value: eventParams.value, currency: 'KRW' });
         } else if (metaEventName) {
-          window.fbq('track', metaEventName);
+          fbq('track', metaEventName);
         } else {
-          window.fbq('trackCustom', eventName);
+          fbq('trackCustom', eventName);
         }
       }
     }
