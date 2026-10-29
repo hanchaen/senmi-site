@@ -71,7 +71,6 @@
       }
     } catch (e) {}
     wipe();
-    if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
     var moved = false;
     function moveToResult() {
       if (moved) return;
@@ -82,6 +81,7 @@
       leadParams.event_callback = moveToResult;
       leadParams.event_timeout = 1200;
       window.gtag('event', 'generate_lead', leadParams);
+      if (window.fbq) window.fbq('track', 'Lead');
       setTimeout(moveToResult, 1400);
     } else {
       moveToResult();
