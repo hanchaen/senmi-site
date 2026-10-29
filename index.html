@@ -129,7 +129,7 @@ if (location.hostname === 'hanchaen.github.io') gtag('config', 'G-42S3KXR4FK');
 </head>
 <body>
 <p class="top">출시 소식을 받으면 첫 구매 혜택을 안내해 드려요</p>
-<header class="hd"><nav><a href="./">SENMI</a><a href="#detail">STORY</a><a href="#product-option">SHOP</a></nav><a class="logo" href="./" aria-label="SENMI 홈"><img src="assets/images/senmi-logo.png" alt="SENMI"></a><div class="r"><a href="#" data-privacy-open>PRIVACY</a><a href="#product-option" id="cta-top">구매하기</a></div></header>
+<header class="hd"><nav><a href="./" data-track-content="nav_home_text" data-track-type="navigation" data-track-placement="header_left">SENMI</a><a href="#detail" data-track-content="nav_story" data-track-type="navigation" data-track-placement="header_left">STORY</a><a href="#product-option" data-track-content="nav_shop" data-track-type="navigation" data-track-placement="header_left">SHOP</a></nav><a class="logo" href="./" aria-label="SENMI 홈" data-track-content="nav_home_logo" data-track-type="navigation" data-track-placement="header_center"><img src="assets/images/senmi-logo.png" alt="SENMI"></a><div class="r"><a href="#" data-privacy-open data-privacy-location="header">PRIVACY</a><a href="#product-option" id="cta-top" data-track-content="header_buy" data-track-type="cta" data-track-placement="header_right">구매하기</a></div></header>
 
 <main>
 <section class="pdp">
@@ -215,14 +215,14 @@ if (location.hostname === 'hanchaen.github.io') gtag('config', 'G-42S3KXR4FK');
     <label class="field"><span>이름</span><input id="f-name" type="text" required maxlength="20" placeholder="홍길동"></label>
 <label class="field"><span>이메일</span><input id="f-contact" type="email" required placeholder="example@email.com"></label>
 
-    <div class="safe-note"><span aria-hidden="true">🔒</span><div>입력한 정보는 <b>어디에도 전송·저장되지 않고</b> 완료 즉시 지워집니다. <button type="button" data-privacy-open>자세히 보기</button></div></div>
+    <div class="safe-note"><span aria-hidden="true">🔒</span><div>입력한 정보는 <b>어디에도 전송·저장되지 않고</b> 완료 즉시 지워집니다. <button type="button" data-privacy-open data-privacy-location="lead_form">자세히 보기</button></div></div>
     <button class="submit" type="submit" id="cta-submit">애플 패치 소식 받기</button>
   </form>
 </section>
 <table class="notice"><tr><th>제품명</th><td>senmi 애플 패치</td></tr><tr><th>용량 및 중량</th><td><span class="todo">n매 / g</span></td></tr><tr><th>전성분</th><td><span class="todo">전성분</span></td></tr><tr><th>사용 시 주의사항</th><td><span class="todo">주의사항</span></td></tr></table>
 </main>
 
-<footer class="ft"><div><b>Information</b>이 페이지는 수업 실습용 페이지입니다. 실제 판매·결제는 이루어지지 않으며, 표기된 수치·후기는 예시입니다.</div><div><b>OFFICIAL</b><a href="#" data-privacy-open>개인정보 처리 안내</a></div><div><b>SHOP</b><a href="#product-option">애플 리셋 패치 구매하기</a></div></footer>
+<footer class="ft"><div><b>Information</b>이 페이지는 수업 실습용 페이지입니다. 실제 판매·결제는 이루어지지 않으며, 표기된 수치·후기는 예시입니다.</div><div><b>OFFICIAL</b><a href="#" data-privacy-open data-privacy-location="footer_official">개인정보 처리 안내</a></div><div><b>SHOP</b><a href="#product-option" data-track-content="footer_buy" data-track-type="cta" data-track-placement="footer">애플 리셋 패치 구매하기</a></div></footer>
 <div class="modal" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title" aria-hidden="true">
   <div class="modal-box">
     <span class="badge">개인정보 미수집 · 즉시 파기</span>
@@ -259,6 +259,10 @@ if (location.hostname === 'hanchaen.github.io') gtag('config', 'G-42S3KXR4FK');
     mainImage.src = button.getAttribute('data-gallery-src');
     var image = button.querySelector('img');
     if (image) mainImage.alt = image.alt;
+    if (typeof window.senmiTrack === 'function') {
+      var position = thumbs.indexOf(button) + 1;
+      window.senmiTrack('select_content', { content_type: 'product_image', content_id: 'product_image_0' + position, content_position: position });
+    }
   }
   thumbs.forEach(function (button) {
     button.addEventListener('click', function () { selectThumb(button); });
@@ -271,8 +275,8 @@ if (location.hostname === 'hanchaen.github.io') gtag('config', 'G-42S3KXR4FK');
   });
 })();
 </script>
-<script src="assets/privacy.js"></script>
-<script src="assets/analytics.js"></script>
-<script src="assets/product-interactions.js?v=20261028-2"></script>
+<script src="assets/analytics.js?v=20261028-3"></script>
+<script src="assets/privacy.js?v=20261028-3"></script>
+<script src="assets/product-interactions.js?v=20261028-3"></script>
 </body>
 </html>
