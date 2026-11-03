@@ -319,7 +319,7 @@ alt=""></noscript>
   var frame;
   function animate() {
     if (!paused) {
-      viewport.scrollLeft += 0.35;
+      viewport.scrollLeft += 1;
       if (viewport.scrollLeft >= row.scrollWidth / 2) viewport.scrollLeft -= row.scrollWidth / 2;
     }
     frame = requestAnimationFrame(animate);
