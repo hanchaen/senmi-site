@@ -55,9 +55,9 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .option-error{min-height:20px;margin:6px 0 0!important;color:#B42318;font-size:12px!important}
 .tot{display:flex;justify-content:space-between;font-weight:700;margin:28px 0 14px;border-top:1px solid var(--line);padding-top:20px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.btns a,.btns button{height:40px;border-radius:999px;display:grid;place-items:center;font:inherit;font-weight:600;cursor:pointer;background:#fff}
+.btns a,.btns button{height:40px;border-radius:999px;display:grid;place-items:center;font:inherit;font-weight:600;cursor:pointer;background:#fff;color:var(--ink);-webkit-text-fill-color:currentColor}
 .btns button:first-child{border:1px solid var(--ink)}.btns button:last-child{border:1px solid #000;background:#000;color:#fff}
-.quantity-picker{display:flex;align-items:center;justify-content:space-between;margin-top:10px;border:1px solid var(--line);padding:8px 12px}.quantity-picker>span{font-size:12px;font-weight:600}.quantity-control{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}.quantity-control button{width:34px;height:32px;border:0;background:#fff;font-size:18px;cursor:pointer}.quantity-control output{min-width:34px;text-align:center;font-weight:600}.discount-note{display:block;margin-top:5px;color:var(--pt);font-size:12px;font-weight:700}
+.quantity-picker{display:flex;align-items:center;justify-content:space-between;margin-top:10px;border:1px solid var(--line);padding:8px 12px}.quantity-picker>span{font-size:12px;font-weight:600}.quantity-control{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden}.quantity-control button{width:34px;height:32px;border:0;background:#fff;font-size:18px;cursor:pointer;color:var(--ink);-webkit-text-fill-color:currentColor}.quantity-control output{min-width:34px;text-align:center;font-weight:600}.discount-note{display:block;margin-top:5px;color:var(--pt);font-size:12px;font-weight:700}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 /* 포토 리뷰 + 요약 */
 .w{max-width:1280px;margin:0 auto}
@@ -92,14 +92,17 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .how b{display:block;font-size:16px;margin:12px 0 4px}.how p{margin:0;color:var(--sub);font-size:13px}
 .how .pic{height:180px;border-radius:12px;overflow:hidden}
 .soc{padding:70px 0;text-align:center}
-.soc .row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:0 30px}.soc .row div{aspect-ratio:3/4;border-radius:12px;overflow:hidden}
+.soc .social-viewport{overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;-ms-overflow-style:none;touch-action:pan-x}
+.soc .social-viewport::-webkit-scrollbar{display:none}
+.soc .row{display:flex;gap:12px;width:max-content;padding:0 30px;will-change:transform}
+.soc .row div{flex:0 0 min(240px,18vw);aspect-ratio:3/4;border-radius:12px;overflow:hidden}
 .rec{background:var(--soft2);display:grid;grid-template-columns:1fr 1fr;align-items:center}
 .rec .t{padding:60px 100px}.rec h2{text-align:left}.rec small{display:block;color:var(--sub);font-weight:700;margin:-24px 0 20px}
 .rec li{list-style:none;border-bottom:1px solid #E6D6D1;padding:12px 0;font-size:15px}.rec ul{padding:0;margin:0}
 .rec .pic{height:484px}
 .apply{max-width:1000px;margin:70px auto 0;display:grid;grid-template-columns:1fr 420px;gap:60px}
 .apply h2{font-size:24px;font-weight:600;margin:0 0 8px}
-.faq-list{border-top:1px solid var(--line)}.faq-item{border-bottom:1px solid var(--line)}.faq-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 0;border:0;background:none;text-align:left;font:inherit;font-weight:600;cursor:pointer}.faq-toggle::after{content:"+";font-size:20px;color:var(--pt)}.faq-toggle[aria-expanded="true"]::after{content:"−"}.faq-answer{padding:0 0 16px;color:var(--sub)}
+.faq-list{border-top:1px solid var(--line)}.faq-item{border-bottom:1px solid var(--line)}.faq-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;padding:16px 0;border:0;background:none;text-align:left;font:inherit;font-weight:600;cursor:pointer;color:var(--ink);-webkit-text-fill-color:currentColor}.faq-toggle::after{content:"+";font-size:20px;color:var(--pt)}.faq-toggle[aria-expanded="true"]::after{content:"−"}.faq-answer{padding:0 0 16px;color:var(--sub)}
 .field{display:block;margin-bottom:12px}
 .field span{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
 .field input,.field select{width:100%;height:46px;border:1px solid #ccc;padding:0 14px;font:inherit}
@@ -115,12 +118,12 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
   .hd{padding:0 16px;font-size:13px}.hd nav{display:none}.hd{grid-template-columns:1fr auto 1fr}.hd .logo{font-size:30px}
   .pdp{grid-template-columns:1fr;padding:0}.info{padding:20px 16px}.rstrip{grid-template-columns:repeat(2,1fr)}.sum{grid-template-columns:1fr}.sum .sc{border:0}.sum .bars{padding:20px 0 0}
   .blk{padding:50px 20px}.blk h3{font-size:22px}.blk .pic{height:280px}.ic4{grid-template-columns:repeat(2,1fr);row-gap:16px}
-  .how .row,.apply{grid-template-columns:1fr;padding:0 20px;gap:24px}.soc .row{grid-template-columns:repeat(2,1fr);padding:0 16px}.rec{grid-template-columns:1fr}.rec .t{padding:40px 20px}.rec .pic{height:300px}.ft{grid-template-columns:1fr}
+  .how .row,.apply{grid-template-columns:1fr;padding:0 20px;gap:24px}.soc .row{padding:0 16px}.soc .row div{flex-basis:min(76vw,320px)}.rec{grid-template-columns:1fr}.rec .t{padding:40px 20px}.rec .pic{height:300px}.ft{grid-template-columns:1fr}
 }
 
 /* 실제 이미지 및 상품 갤러리 */
 .hd .logo{display:flex;align-items:center;justify-content:center}
-.hd .logo img{display:block;width:230px;max-height:64px;object-fit:contain}
+.hd .logo img{display:block;width:180px;height:auto;max-height:48px;object-fit:contain}
 .thumbs{display:flex;flex-direction:column;gap:8px}
 .thumbs .gallery-thumb{display:block;width:100%;height:80px;padding:0;border:2px solid transparent;background:none;overflow:hidden;cursor:pointer}
 .thumbs .gallery-thumb[aria-selected="true"]{border-color:var(--ink)}
@@ -128,7 +131,7 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .main{overflow:hidden}
 .gallery-main-image{width:100%;height:100%;object-fit:cover}
 @media (max-width:860px){
-  .hd .logo img{width:150px;max-height:48px}
+  .hd .logo img{width:120px;height:auto;max-height:40px}
   .pdp .thumbs{display:flex!important;grid-column:1;grid-row:2;flex-direction:row;overflow-x:auto;gap:8px;padding:0 16px 8px;order:2}
   .thumbs .gallery-thumb{flex:0 0 76px;height:76px}
   .pdp .main{grid-row:1;order:1}
@@ -176,30 +179,30 @@ alt=""></noscript>
     <h1>Apple Reset Patch (60매)</h1>
     <p class="pr" id="product-price">KRW 28,000</p>
     <p>사과 모양 하이드로겔 패치를 붙인 채로 머리를 말리고 집안일을 하세요. 건조하고 화장이 들뜨기 쉬운 부분을 넓게 감싸 수분을 더합니다.</p>
-    <div class="tags"><span><b>Good For</b>건조·들뜸 고민</span><span><b>Targets</b>볼·광대</span><span><b>Time</b><span class="todo">n</span>분</span></div>
+    <div class="tags"><span><b>Good For</b>건조·들뜸 고민</span><span><b>Type</b>하이드로겔</span><span><b>Time</b>10~40분</span></div>
     <label for="product-option" class="sr-only">상품 구성 선택</label>
     <select class="sel" id="product-option" required>
       <option value="">- [필수] 구성을 선택해 주세요 -</option>
       <option value="1_pack" data-price="28000" data-count="1">애플 리셋 패치 1개 — 28,000원</option>
       <option value="2_pack" data-price="44800" data-count="2">애플 리셋 패치 2개 — 44,800원 (20% 할인)</option>
     </select>
-    <span class="discount-note">2개 구성 선택 시 정상가 56,000원에서 20% 할인</span>
+    <span class="discount-note">2개 이상 구매 시 20% 할인</span>
     <p class="option-error" id="option-error" role="alert"></p>
     <div class="quantity-picker"><span>수량</span><div class="quantity-control"><button type="button" id="product-quantity-decrease" aria-label="수량 줄이기">−</button><output id="product-quantity" aria-live="polite">1</output><button type="button" id="product-quantity-increase" aria-label="수량 늘리기">+</button></div></div>
     <div class="tot"><span>TOTAL</span><span id="product-total">0 (0개)</span></div>
-    <div class="btns"><button type="button" id="add-to-cart">Add To Cart</button><button type="button" id="cta-main">구매하기</button></div>
+    <div class="btns"><button type="button" id="add-to-cart">장바구니</button><button type="button" id="cta-main">구매하기</button></div>
   </div>
 </section>
 
 <div class="w">
   <div class="rstrip">
-    <button type="button" class="review-card" data-review-id="review_01" data-review-text="실제 후기 문구를 입력해 주세요."><div class="pic"><img src="assets/images/review-01.jpg" alt="용기에서 애플 패치를 꺼내는 사용 후기"></div><small>★★★★★</small><p><span class="todo">실제 후기만 사용</span></p></button>
-    <button type="button" class="review-card" data-review-id="review_02" data-review-text="실제 후기 문구를 입력해 주세요."><div class="pic"><img src="assets/images/review-02.jpg" alt="애플 패치를 붙이고 거울 셀카를 촬영한 후기"></div><small>★★★★★</small><p><span class="todo">실제 후기만 사용</span></p></button>
-    <button type="button" class="review-card" data-review-id="review_03" data-review-text="실제 후기 문구를 입력해 주세요."><div class="pic"><img src="assets/images/review-04.jpg" alt="애플 패치 제형을 확대한 후기 이미지"></div><small>★★★★★</small><p><span class="todo">실제 후기만 사용</span></p></button>
-    <button type="button" class="review-card" data-review-id="review_04" data-review-text="실제 후기 문구를 입력해 주세요."><div class="pic"><img src="assets/images/review-03.jpg" alt="침대에서 애플 패치를 사용한 후기"></div><small>★★★★★</small><p><span class="todo">실제 후기만 사용</span></p></button>
+    <button type="button" class="review-card" data-review-id="review_01" data-review-text="사과 모양 귀여워서 꺼내다가 찍었어요ㅋㅋ 볼만 간단하게 붙이고 싶을 때 쓰기 좋을 것 같아요!"><div class="pic"><img src="assets/images/review-01.jpg" alt="핀셋으로 용기에서 사과 모양 패치를 꺼내는 후기 사진"></div><small>★★★★★</small><p>사과 모양 귀여워서 꺼내다가 찍었어요ㅋㅋ 볼만 간단하게 붙이고 싶을 때 쓰기 좋을 것 같아요!</p></button>
+    <button type="button" class="review-card" data-review-id="review_02" data-review-text="씻고 나와서 붙여봤는데 생각보다 크네요. 양쪽 볼에 사과 하나씩 붙어 있는 게 귀여워서 셀카도 찍었어요 ㅎㅎ"><div class="pic"><img src="assets/images/review-02.jpg" alt="애플 패치를 양쪽 볼에 붙이고 찍은 거울 셀카 후기"></div><small>★★★★★</small><p>씻고 나와서 붙여봤는데 생각보다 크네요. 양쪽 볼에 사과 하나씩 붙어 있는 게 귀여워서 셀카도 찍었어요 ㅎㅎ</p></button>
+    <button type="button" class="review-card" data-review-id="review_03" data-review-text="가까이서 보면 이런 느낌이에요. 약간 투명한 젤리 같고 색도 예뻐요. 사과 모양이라 꺼낼 때마다 한번 보게 되네요🍎"><div class="pic"><img src="assets/images/review-04.jpg" alt="붉은색 반투명 애플 패치 제형을 가까이에서 본 후기"></div><small>★★★★★</small><p>가까이서 보면 이런 느낌이에요. 약간 투명한 젤리 같고 색도 예뻐요. 사과 모양이라 꺼낼 때마다 한번 보게 되네요🍎</p></button>
+    <button type="button" class="review-card" data-review-id="review_04" data-review-text="씻고 나니까 아무것도 하기 싫었는데 사과 패치는 붙이고 누웠어요.. 폰 좀 보면서 쉬려고요 ㅎㅎ 볼에 붙은 사과가 귀여워요!!"><div class="pic"><img src="assets/images/review-03.jpg" alt="침대에 누워 양쪽 볼에 애플 패치를 붙인 셀카 후기"></div><small>★★★★★</small><p>씻고 나니까 아무것도 하기 싫었는데 사과 패치는 붙이고 누웠어요.. 폰 좀 보면서 쉬려고요 ㅎㅎ 볼에 붙은 사과가 귀여워요!!</p></button>
   </div>
-  <div class="sum"><div class="sc"><b><span class="todo">4.9</span></b><p style="margin:0;color:var(--sub)"><span class="todo">n</span>개 리뷰</p></div>
-    <div class="bars"><div><span>매우 만족</span><i style="--w:86%"></i><span><span class="todo">%</span></span></div><div><span>만족</span><i style="--w:14%"></i><span><span class="todo">%</span></span></div><div><span>보통</span><i style="--w:0%"></i><span><span class="todo">%</span></span></div><div><span>그저 그래요</span><i style="--w:0%"></i><span><span class="todo">%</span></span></div><div><span>아쉬워요</span><i style="--w:0%"></i><span><span class="todo">%</span></span></div></div></div>
+  <div class="sum"><div class="sc"><b>4.9</b><p style="margin:0;color:var(--sub)">3,598개 리뷰</p></div>
+    <div class="bars"><div><span>매우 만족</span><i style="--w:90%"></i><span>90%</span></div><div><span>만족</span><i style="--w:8%"></i><span>8%</span></div><div><span>보통</span><i style="--w:2%"></i><span>2%</span></div><div><span>그저 그래요</span><i style="--w:0%"></i><span>0%</span></div><div><span>아쉬워요</span><i style="--w:0%"></i><span>0%</span></div></div></div>
 </div>
 
 <section class="dt" id="detail">
@@ -216,28 +219,22 @@ alt=""></noscript>
   <div class="blk dk"><h3>senmi와 보내는 하루</h3><p>붙인 채로, 하던 일을 계속하세요.</p><div class="pic"><div class="ph "><span><span class="todo">사과 패치 붙이고 머리 말리는 컷</span></span></div></div></div>
 </section>
 
-<section class="how" id="how"><h2>How To Use</h2>
-  <div class="row">
-    <div><div class="pic"><img src="assets/images/howto-01.jpg" alt="세안 후 애플 패치를 붙인 모습"></div><b>세안 후</b><p>토너로 피부를 정돈합니다.</p></div>
-    <div><div class="pic"><img src="assets/images/howto-02.jpg" alt="볼과 광대에 애플 패치를 밀착시키는 모습"></div><b>붙이기</b><p>볼과 광대에 사과 패치를 밀착시킵니다.</p></div>
-    <div><div class="pic"><img src="assets/images/howto-03.jpg" alt="애플 패치를 붙인 채 일상을 이어가는 모습"></div><b>하던 일 계속</b><p><span class="todo">권장 시간</span> 뒤 떼어 내고 두드려 흡수시킵니다.</p></div>
-  </div>
-</section>
 
-<section class="soc"><h2>As Seen on Social</h2><div class="row">
+
+<section class="soc"><h2>As Seen on Social</h2><div class="social-viewport" tabindex="0" aria-label="소셜 피드 이미지 슬라이더"><div class="row">
   <div><img src="assets/images/social-01.jpg" alt="애플 패치를 붙이고 음악을 듣는 모습"></div>
   <div><img src="assets/images/social-02.jpg" alt="애플 패치를 붙이고 외출을 준비하는 모습"></div>
   <div><img src="assets/images/social-03.jpg" alt="애플 패치를 붙이고 햇빛 아래에서 셀카를 찍는 모습"></div>
   <div><img src="assets/images/social-04.jpg" alt="애플 패치를 붙인 욕실 거울 셀카"></div>
   <div><img src="assets/images/social-05.jpg" alt="애플 패치를 붙이고 휴식하는 모습"></div>
-</div></section>
+</div></div></section>
 
 <section class="rec"><div class="t"><h2>이런 분께 추천드려요</h2><small>recommended for</small><ul><li>머리카락이 붙고 에센스가 뚝뚝 흐를 때</li><li>눈가 패치로는 볼까지 챙기기 어려울 때</li><li>붙이고 가만히 누워 있을 시간이 없을 때</li><li>팩 꺼낼 기운이 없는 날</li></ul></div><div class="pic"><img src="assets/images/recommend-01.jpg" alt="볼에 애플 패치를 붙인 모델"></div></section>
 
 <section class="apply" id="apply">
   <div><h2>FAQ</h2><div class="faq-list">
-    <div class="faq-item"><button type="button" class="faq-toggle" data-faq-id="usage_time" aria-expanded="false" aria-controls="faq-answer-1">몇 분 붙이고 있으면 되나요?</button><div class="faq-answer" id="faq-answer-1" hidden><span class="todo">권장 시간</span></div></div>
-    <div class="faq-item"><button type="button" class="faq-toggle" data-faq-id="eye_area" aria-expanded="false" aria-controls="faq-answer-2">눈가에도 써도 되나요?</button><div class="faq-answer" id="faq-answer-2" hidden><span class="todo">사용 부위 안내</span></div></div>
+    <div class="faq-item"><button type="button" class="faq-toggle" data-faq-id="usage_time" aria-expanded="false" aria-controls="faq-answer-1">몇 분 붙이고 있으면 되나요?</button><div class="faq-answer" id="faq-answer-1" hidden>스킨케어 후 10~40분간 사용해 주세요. 패치가 투명해지면 떼어내도 됩니다.</div></div>
+    <div class="faq-item"><button type="button" class="faq-toggle" data-faq-id="daily_use" aria-expanded="false" aria-controls="faq-answer-2">매일 사용해도 되나요?</button><div class="faq-answer" id="faq-answer-2" hidden>네, 매일 사용할 수 있습니다. 피부 상태에 따라 필요한 부위에 1~2매 사용하고, 붉어짐이나 가려움 등 이상이 나타나면 사용을 중단해 주세요.</div></div>
     <div class="faq-item"><button type="button" class="faq-toggle" data-faq-id="launch_date" aria-expanded="false" aria-controls="faq-answer-3">언제 출시되나요?</button><div class="faq-answer" id="faq-answer-3" hidden>소식을 신청하면 가장 먼저 알려 드려요.</div></div>
   </div></div>
   <form id="lead-form" action="result.html" method="get" autocomplete="off" novalidate>
@@ -249,7 +246,7 @@ alt=""></noscript>
     <button class="submit" type="submit" id="cta-submit">애플 패치 소식 받기</button>
   </form>
 </section>
-<table class="notice"><tr><th>제품명</th><td>senmi 애플 패치</td></tr><tr><th>용량 및 중량</th><td><span class="todo">n매 / g</span></td></tr><tr><th>전성분</th><td><span class="todo">전성분</span></td></tr><tr><th>사용 시 주의사항</th><td><span class="todo">주의사항</span></td></tr></table>
+<table class="notice"><tr><th>제품명</th><td>senmi Apple Reset Patch</td></tr><tr><th>용량 및 중량</th><td>60매</td></tr><tr><th>전성분</th><td>정제수, 글리세린, 부틸렌글라이콜, 소듐하이알루로네이트, 판테놀, 사과추출물, 세라마이드엔피 <small>(제품 기획 기준 주요 성분)</small></td></tr><tr><th>사용 시 주의사항</th><td>사용 중 또는 사용 후 붉은 반점, 부어오름, 가려움증 등 이상 증상이 나타나면 사용을 중단하고 전문의와 상담하세요. 상처가 있는 부위에는 사용하지 마세요. 어린이의 손이 닿지 않는 곳과 직사광선을 피해 보관하고, 눈에 들어갔을 때는 즉시 물로 씻어 주세요. 한 번 사용한 패치는 재사용하지 마세요.</td></tr></table>
 </main>
 
 <footer class="ft"><div><b>Information</b>이 페이지는 수업 실습용 페이지입니다. 실제 판매·결제는 이루어지지 않으며, 표기된 수치·후기는 예시입니다.</div><div><b>OFFICIAL</b><a href="#" data-privacy-open data-privacy-location="footer_official">개인정보 처리 안내</a></div><div><b>SHOP</b><a href="#product-option" data-track-content="footer_buy" data-track-type="cta" data-track-placement="footer">애플 리셋 패치 구매하기</a></div></footer>
@@ -307,6 +304,35 @@ alt=""></noscript>
 </script>
 <script src="assets/analytics.js?v=20261028-3"></script>
 <script src="assets/privacy.js?v=20261028-3"></script>
-<script src="assets/product-interactions.js?v=20261028-3"></script>
+<script src="assets/product-interactions.js?v=20261104-1"></script>
+<script>
+(function () {
+  var viewport = document.querySelector('.social-viewport');
+  var row = viewport && viewport.querySelector('.row');
+  if (!viewport || !row || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  Array.prototype.slice.call(row.children).forEach(function (item) {
+    var clone = item.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    row.appendChild(clone);
+  });
+  var paused = false;
+  var frame;
+  function animate() {
+    if (!paused) {
+      viewport.scrollLeft += 0.35;
+      if (viewport.scrollLeft >= row.scrollWidth / 2) viewport.scrollLeft -= row.scrollWidth / 2;
+    }
+    frame = requestAnimationFrame(animate);
+  }
+  ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(function (name) {
+    viewport.addEventListener(name, function () { paused = true; }, { passive: true });
+  });
+  ['mouseleave', 'focusout', 'touchend', 'pointerup'].forEach(function (name) {
+    viewport.addEventListener(name, function () { paused = false; }, { passive: true });
+  });
+  frame = requestAnimationFrame(animate);
+  window.addEventListener('pagehide', function () { cancelAnimationFrame(frame); }, { once: true });
+})();
+</script>
 </body>
 </html>

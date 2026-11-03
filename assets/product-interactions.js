@@ -28,10 +28,22 @@
     });
   });
 
+  function pricing(option, quantity) {
+    var unitPrice = 28000;
+    var unitCount = Number(option.dataset.count);
+    var totalCount = unitCount * quantity;
+    var totalPrice = unitPrice * totalCount;
+    if (totalCount >= 2) totalPrice = Math.round(totalPrice * 0.8);
+    return { unitPrice: unitPrice, unitCount: unitCount, totalCount: totalCount, totalPrice: totalPrice };
+  }
+
   function selectedItem(option, quantity) {
+    var calculated = pricing(option, quantity);
     return Object.assign({}, PRODUCT, {
       item_variant: option.value,
-      price: Number(option.dataset.price),
+      price: calculated.totalPrice / quantity,
+      base_unit_price: calculated.unitPrice,
+      unit_count: calculated.unitCount,
       quantity: quantity
     });
   }
@@ -55,10 +67,9 @@
       totalValue.textContent = '0 (0개)';
       return;
     }
-    var price = Number(option.dataset.price);
-    var totalCount = Number(option.dataset.count) * quantity;
-    priceLabel.textContent = 'KRW ' + price.toLocaleString('ko-KR');
-    totalValue.textContent = (price * quantity).toLocaleString('ko-KR') + '원 (총 ' + totalCount + '개)';
+    var calculated = pricing(option, quantity);
+    priceLabel.textContent = 'KRW ' + calculated.totalPrice.toLocaleString('ko-KR');
+    totalValue.textContent = calculated.totalPrice.toLocaleString('ko-KR') + '원 (총 ' + calculated.totalCount + '개)';
   }
 
   function addSelectionToCart(buttonType) {
@@ -76,7 +87,7 @@
     if (existing) existing.quantity += quantity;
     else cart.push(item);
     sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
-    track('add_to_cart', { currency: 'KRW', value: item.price * item.quantity, button_type: buttonType, items: [item] });
+    track('add_to_cart', { currency: 'KRW', value: pricing(option, quantity).totalPrice, button_type: buttonType, items: [item] });
     location.href = 'cart.html';
   }
 
