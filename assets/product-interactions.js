@@ -7,15 +7,31 @@
   };
   var CART_KEY = 'senmi_cart';
   var SELECTION_KEY = 'senmi_last_selection';
+  var UNIT_PRICE = 28000;
+  var DISCOUNTED_UNIT_PRICE = 22400;
 
   function track(name, params) {
     if (typeof window.senmiTrack === 'function') window.senmiTrack(name, params);
   }
 
+  function totalPrice(quantity) {
+    return (quantity >= 2 ? DISCOUNTED_UNIT_PRICE : UNIT_PRICE) * quantity;
+  }
+
+  function cartItem(quantity) {
+    return Object.assign({}, PRODUCT, {
+      item_variant: 'single',
+      price: quantity >= 2 ? DISCOUNTED_UNIT_PRICE : UNIT_PRICE,
+      base_unit_price: UNIT_PRICE,
+      unit_count: 1,
+      quantity: quantity
+    });
+  }
+
   track('view_item', {
     currency: 'KRW',
-    value: 28000,
-    items: [Object.assign({}, PRODUCT, { price: 28000, quantity: 1 })]
+    value: UNIT_PRICE,
+    items: [cartItem(1)]
   });
 
   document.querySelectorAll('[data-track-content]').forEach(function (element) {
@@ -28,29 +44,7 @@
     });
   });
 
-  function pricing(option, quantity) {
-    var unitPrice = 28000;
-    var unitCount = Number(option.dataset.count);
-    var totalCount = unitCount * quantity;
-    var totalPrice = unitPrice * totalCount;
-    if (totalCount >= 2) totalPrice = Math.round(totalPrice * 0.8);
-    return { unitPrice: unitPrice, unitCount: unitCount, totalCount: totalCount, totalPrice: totalPrice };
-  }
-
-  function selectedItem(option, quantity) {
-    var calculated = pricing(option, quantity);
-    return Object.assign({}, PRODUCT, {
-      item_variant: option.value,
-      price: calculated.totalPrice / quantity,
-      base_unit_price: calculated.unitPrice,
-      unit_count: calculated.unitCount,
-      quantity: quantity
-    });
-  }
-
-  var optionSelect = document.getElementById('product-option');
   var totalValue = document.getElementById('product-total');
-  var optionError = document.getElementById('option-error');
   var addToCart = document.getElementById('add-to-cart');
   var buyNow = document.getElementById('cta-main');
   var priceLabel = document.getElementById('product-price');
@@ -58,68 +52,64 @@
   var increaseQuantity = document.getElementById('product-quantity-increase');
   var quantityOutput = document.getElementById('product-quantity');
   var quantity = 1;
+  var navigating = false;
 
   function updateProductSummary() {
-    var option = optionSelect.options[optionSelect.selectedIndex];
     quantityOutput.textContent = quantity;
-    if (!option.value) {
-      priceLabel.textContent = 'KRW 28,000';
-      totalValue.textContent = '0 (0개)';
-      return;
-    }
-    var calculated = pricing(option, quantity);
-    priceLabel.textContent = 'KRW ' + calculated.totalPrice.toLocaleString('ko-KR');
-    totalValue.textContent = calculated.totalPrice.toLocaleString('ko-KR') + '원 (총 ' + calculated.totalCount + '개)';
+    priceLabel.textContent = 'KRW ' + UNIT_PRICE.toLocaleString('ko-KR');
+    totalValue.textContent = totalPrice(quantity).toLocaleString('ko-KR') + '원 (총 ' + quantity + '개)';
   }
 
   function addSelectionToCart(buttonType) {
-    var option = optionSelect.options[optionSelect.selectedIndex];
-    if (!option.value) {
-      optionError.textContent = '구성을 먼저 선택해 주세요.';
-      optionSelect.focus();
-      return;
-    }
-    var item = selectedItem(option, quantity);
+    if (navigating) return;
+    navigating = true;
+    var item = cartItem(quantity);
     sessionStorage.setItem(SELECTION_KEY, JSON.stringify(item));
     var cart = [];
     try { cart = JSON.parse(sessionStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
-    var existing = cart.find(function (entry) { return entry.item_variant === item.item_variant; });
-    if (existing) existing.quantity += quantity;
-    else cart.push(item);
+    var existing = cart.find(function (entry) { return entry.item_id === item.item_id; });
+    if (existing) {
+      existing.quantity += quantity;
+      existing.price = existing.quantity >= 2 ? DISCOUNTED_UNIT_PRICE : UNIT_PRICE;
+      existing.item_variant = 'single';
+      existing.base_unit_price = UNIT_PRICE;
+      existing.unit_count = 1;
+    } else {
+      cart.push(item);
+    }
     sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
-    track('add_to_cart', { currency: 'KRW', value: pricing(option, quantity).totalPrice, button_type: buttonType, items: [item] });
+    track('add_to_cart', {
+      currency: 'KRW',
+      value: totalPrice(quantity),
+      button_type: buttonType,
+      items: [item]
+    });
     location.href = 'cart.html';
   }
 
-  if (optionSelect && totalValue && addToCart && buyNow) {
-    optionSelect.addEventListener('change', function () {
-      var option = optionSelect.options[optionSelect.selectedIndex];
-      optionError.textContent = '';
-      updateProductSummary();
-      if (!option.value) return;
-      var item = selectedItem(option, quantity);
-      sessionStorage.setItem(SELECTION_KEY, JSON.stringify(item));
-      track('select_item', {
-        item_list_id: 'product_option',
-        item_list_name: 'product_option',
-        items: [item]
-      });
-    });
-
+  if (totalValue && addToCart && buyNow && decreaseQuantity && increaseQuantity && quantityOutput) {
     decreaseQuantity.addEventListener('click', function () {
       if (quantity === 1) return;
       var previous = quantity;
       quantity -= 1;
       updateProductSummary();
-      var option = optionSelect.options[optionSelect.selectedIndex];
-      track('product_quantity_update', { item_id: PRODUCT.item_id, item_variant: option.value || 'not_selected', previous_quantity: previous, new_quantity: quantity, update_method: 'decrease' });
+      track('product_quantity_update', {
+        item_id: PRODUCT.item_id,
+        previous_quantity: previous,
+        new_quantity: quantity,
+        update_method: 'decrease'
+      });
     });
     increaseQuantity.addEventListener('click', function () {
       var previous = quantity;
       quantity += 1;
       updateProductSummary();
-      var option = optionSelect.options[optionSelect.selectedIndex];
-      track('product_quantity_update', { item_id: PRODUCT.item_id, item_variant: option.value || 'not_selected', previous_quantity: previous, new_quantity: quantity, update_method: 'increase' });
+      track('product_quantity_update', {
+        item_id: PRODUCT.item_id,
+        previous_quantity: previous,
+        new_quantity: quantity,
+        update_method: 'increase'
+      });
     });
     addToCart.addEventListener('click', function () { addSelectionToCart('add_to_cart'); });
     buyNow.addEventListener('click', function () { addSelectionToCart('buy_now'); });

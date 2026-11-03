@@ -67,24 +67,9 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .sum .sc{text-align:center;border-right:1px solid var(--line)}.sum .sc b{font-size:28px}.sum .sc b:before{content:"★";color:#F2A9A1}
 .sum .bars{padding-left:30px}.sum .bars div{display:grid;grid-template-columns:70px 1fr 50px;gap:14px;align-items:center;font-size:13px;margin:4px 0}
 .sum .bars i{height:8px;background:#eee;border-radius:9px}.sum .bars i:before{content:"";display:block;height:8px;border-radius:9px;width:var(--w);background:#F2A9A1}
-/* 상세 664 */
-.dt{width:664px;max-width:100%;margin:80px auto 0}
-.ic4{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;font-size:12px;font-weight:600;padding-bottom:30px}
-.ic4 i{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 6px;border-radius:50%;border:1.5px solid var(--ink);font-style:normal}
-.blk{text-align:center;padding:70px 40px}
-.blk.g{background:linear-gradient(180deg,var(--soft2),var(--soft))}.blk.dk{background:#F0E3DF}
-.blk .n{font-size:13px;color:var(--sub)}
-.blk h3{font-size:28px;font-weight:700;line-height:1.35;margin:6px 0 10px;letter-spacing:-.03em}
-.blk h3 em{font-style:normal;color:var(--pt)}
-.blk p{color:var(--sub);margin:0 auto;max-width:440px;font-size:14px}
-.blk .pic{height:420px;margin-top:34px;border-radius:6px;overflow:hidden}
-.blk .badge{display:inline-block;background:var(--pt);color:#fff;border-radius:6px;font-weight:700;padding:8px 18px;margin-top:20px}
-.blk .circ{display:flex;justify-content:center;gap:24px;margin-top:30px}
-.blk .circ div{width:110px}.blk .circ i{display:block;width:100px;height:100px;border-radius:50%;margin:0 auto 8px;background:radial-gradient(circle at 35% 30%,#fff,var(--soft))}
-.blk .big{font-size:56px;font-weight:800;color:var(--pt);letter-spacing:-.03em;margin:20px 0 0}
-.blk .pains{margin:30px auto 0;max-width:420px;text-align:left}
-.blk .pains div{background:#fff;border-radius:999px;padding:10px 18px;margin-bottom:8px;font-size:14px}
-.blk .pains div:before{content:"✓ ";color:var(--pt);font-weight:700}
+/* 상품 상세 이미지 */
+.dt{width:664px;max-width:100%;margin:80px auto 0;line-height:0}
+.dt img{display:block;width:100%;height:auto;margin:0;padding:0}
 /* 하단 띠들 */
 .how{background:var(--soft2);margin-top:80px;padding:60px 0;text-align:center}
 .how h2,.soc h2,.rec h2,.faq h2{font-size:24px;font-weight:600;margin:0 0 30px}
@@ -180,16 +165,9 @@ alt=""></noscript>
     <p class="pr" id="product-price">KRW 28,000</p>
     <p>사과 모양 하이드로겔 패치를 붙인 채로 머리를 말리고 집안일을 하세요. 건조하고 화장이 들뜨기 쉬운 부분을 넓게 감싸 수분을 더합니다.</p>
     <div class="tags"><span><b>Good For</b>건조·들뜸 고민</span><span><b>Type</b>하이드로겔</span><span><b>Time</b>10~40분</span></div>
-    <label for="product-option" class="sr-only">상품 구성 선택</label>
-    <select class="sel" id="product-option" required>
-      <option value="">- [필수] 구성을 선택해 주세요 -</option>
-      <option value="1_pack" data-price="28000" data-count="1">애플 리셋 패치 1개 — 28,000원</option>
-      <option value="2_pack" data-price="44800" data-count="2">애플 리셋 패치 2개 — 44,800원 (20% 할인)</option>
-    </select>
     <span class="discount-note">2개 이상 구매 시 20% 할인</span>
-    <p class="option-error" id="option-error" role="alert"></p>
     <div class="quantity-picker"><span>수량</span><div class="quantity-control"><button type="button" id="product-quantity-decrease" aria-label="수량 줄이기">−</button><output id="product-quantity" aria-live="polite">1</output><button type="button" id="product-quantity-increase" aria-label="수량 늘리기">+</button></div></div>
-    <div class="tot"><span>TOTAL</span><span id="product-total">0 (0개)</span></div>
+    <div class="tot"><span>TOTAL</span><span id="product-total">28,000원 (총 1개)</span></div>
     <div class="btns"><button type="button" id="add-to-cart">장바구니</button><button type="button" id="cta-main">구매하기</button></div>
   </div>
 </section>
@@ -205,18 +183,11 @@ alt=""></noscript>
     <div class="bars"><div><span>매우 만족</span><i style="--w:90%"></i><span>90%</span></div><div><span>만족</span><i style="--w:8%"></i><span>8%</span></div><div><span>보통</span><i style="--w:2%"></i><span>2%</span></div><div><span>그저 그래요</span><i style="--w:0%"></i><span>0%</span></div><div><span>아쉬워요</span><i style="--w:0%"></i><span>0%</span></div></div></div>
 </div>
 
-<section class="dt" id="detail">
-  <div class="ic4"><div><i>🍎</i>사과 모양</div><div><i>💧</i>하이드로겔</div><div><i>⟳</i>붙이고 움직이기</div><div><i>✦</i>넓게 감싸기</div></div>
-  <div class="blk g"><p class="n">APPLE PATCH</p><h3>팩 꺼낼 기운이 없는 날엔,<br>사과 한 장</h3><div class="pic"><div class="ph "><span><span class="todo">파우치에서 사과 패치를 꺼내는 컷</span></span></div></div><span class="badge"><span class="todo">사용 만족도 수치 (근거 있을 때만)</span></span></div>
-  <div class="blk"><h3>시트 마스크가 귀찮았던 이유</h3><div class="pains"><div>머리카락이 붙고 에센스가 뚝뚝 흐를 때</div><div>눈가 패치로는 볼까지 챙기기 어려울 때</div><div>붙이고 가만히 누워 있을 시간이 없을 때</div></div></div>
-  <div class="blk g"><p class="n">01</p><h3>넓게 감싸는 사과 모양</h3><p>눈가만 덮는 패치보다 넓게, 볼과 광대까지 감쌉니다.</p>
-<div class="pic"><div class="ph "><span><span class="todo">넓게 감싸는 사과 모양 연출 컷</span></span></div></div></div>
-  <div class="blk "><p class="n">02</p><h3>붙이고 움직이기</h3><p>붙인 채로 머리 말리기, 집안일을 이어갈 수 있습니다.</p>
-<div class="pic"><div class="ph "><span><span class="todo">붙이고 움직이기 연출 컷</span></span></div></div></div>
-  <div class="blk g"><p class="n">03</p><h3>하이드로겔 수분감</h3><p>건조해지기 쉬운 부분에 수분을 더합니다.</p>
-<div class="circ"><div><i></i><span class="todo">성분 1</span></div><div><i></i><span class="todo">성분 2</span></div><div><i></i><span class="todo">성분 3</span></div></div><p class="big"><span class="todo">수분 수치 %</span></p>
-</div>
-  <div class="blk dk"><h3>senmi와 보내는 하루</h3><p>붙인 채로, 하던 일을 계속하세요.</p><div class="pic"><div class="ph "><span><span class="todo">사과 패치 붙이고 머리 말리는 컷</span></span></div></div></div>
+<section class="dt" id="detail" aria-label="Apple Reset Patch 상품 상세정보">
+  <img src="assets/images/detail-01.png" alt="Apple Reset Patch 상품 상세정보 1" width="860" height="5218">
+  <img src="assets/images/detail-02.png" alt="Apple Reset Patch 상품 상세정보 2" width="860" height="7087" loading="lazy">
+  <img src="assets/images/detail-03.png" alt="Apple Reset Patch 상품 상세정보 3" width="860" height="4017" loading="lazy">
+  <img src="assets/images/detail-04.png" alt="Apple Reset Patch 상품 상세정보 4" width="860" height="7149" loading="lazy">
 </section>
 
 
@@ -304,7 +275,7 @@ alt=""></noscript>
 </script>
 <script src="assets/analytics.js?v=20261028-3"></script>
 <script src="assets/privacy.js?v=20261028-3"></script>
-<script src="assets/product-interactions.js?v=20261104-1"></script>
+<script src="assets/product-interactions.js?v=20261104-2"></script>
 <script>
 (function () {
   var viewport = document.querySelector('.social-viewport');
