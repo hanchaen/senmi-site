@@ -126,6 +126,9 @@
   if (headerHomeText) headerHomeText.addEventListener('click', function () {
     track('select_content', { content_type: 'navigation', content_id: 'cart_header_home_text', placement: 'cart_header' });
   });
+  if (headerHomeLogo) headerHomeLogo.addEventListener('click', function () {
+    track('select_content', { content_type: 'navigation', content_id: 'cart_header_home_logo', placement: 'cart_header' });
+  });
   if (headerNews) headerNews.addEventListener('click', function () {
     track('select_content', { content_type: 'cta', content_id: 'cart_header_news', placement: 'cart_header', destination: 'apply' });
   });
@@ -142,6 +145,7 @@
   var emailError = document.getElementById('purchase-email-error');
   var toast = document.getElementById('purchase-toast');
   var toastTimer;
+  var formStarted = false;
 
   function openPurchaseModal() {
     track('purchase_intent', {
@@ -191,16 +195,41 @@
         }
       }
     });
+    form.addEventListener('input', function () {
+      if (formStarted) return;
+      formStarted = true;
+      track('lead_form_start', { form_id: 'purchase_interest_form', form_name: 'cart_purchase_interest' });
+    });
     form.addEventListener('submit', function (event) {
       event.preventDefault();
       nameError.textContent = nameInput.value.trim() ? '' : '이름을 입력해 주세요.';
       emailError.textContent = emailInput.validity.valid && emailInput.value.trim() ? '' : '올바른 이메일 주소를 입력해 주세요.';
       if (nameError.textContent || emailError.textContent) {
+        track('lead_form_submit_attempt', {
+          form_id: 'purchase_interest_form',
+          validation_status: 'invalid',
+          missing_field_count: Number(Boolean(nameError.textContent)) + Number(Boolean(emailError.textContent))
+        });
         (nameError.textContent ? nameInput : emailInput).focus();
         return;
       }
+      track('lead_form_submit_attempt', {
+        form_id: 'purchase_interest_form',
+        validation_status: 'valid',
+        missing_field_count: 0
+      });
+      track('generate_lead', {
+        lead_source: 'cart_purchase_interest',
+        form_id: 'purchase_interest_form',
+        form_name: 'cart_purchase_interest',
+        currency: 'KRW',
+        value: priceSummary().finalTotal,
+        item_id: 'apple_reset_patch',
+        quantity: totalQuantity()
+      });
       nameInput.value = '';
       emailInput.value = '';
+      formStarted = false;
       closePurchaseModal();
       toast.hidden = false;
       clearTimeout(toastTimer);
