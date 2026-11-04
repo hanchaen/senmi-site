@@ -108,15 +108,15 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 /* 실제 이미지 및 상품 갤러리 */
 .hd .logo{display:flex;align-items:center;justify-content:center}
 .hd .logo img{display:block;width:180px;height:auto;max-height:48px;object-fit:contain}
-.thumbs{display:flex;flex-direction:column;gap:8px}
-.thumbs .gallery-thumb{display:block;width:100%;height:80px;padding:0;border:2px solid transparent;background:none;overflow:hidden;cursor:pointer}
+.thumbs{display:flex;flex-direction:column;gap:8px;height:555px;overflow:hidden}
+.thumbs .gallery-thumb{display:block;flex:1 1 0;width:100%;height:auto;min-height:0;padding:0;border:2px solid transparent;box-sizing:border-box;background:none;overflow:hidden;cursor:pointer}
 .thumbs .gallery-thumb[aria-selected="true"]{border-color:var(--ink)}
 .thumbs img,.main img,.rstrip .pic img,.how .pic img,.soc .row img,.rec .pic img{display:block;width:100%;height:100%;object-fit:cover}
 .main{overflow:hidden}
 .gallery-main-image{width:100%;height:100%;object-fit:cover}
 @media (max-width:860px){
   .hd .logo img{width:120px;height:auto;max-height:40px}
-  .pdp .thumbs{display:flex!important;grid-column:1;grid-row:2;flex-direction:row;overflow-x:auto;gap:8px;padding:0 16px 8px;order:2}
+  .pdp .thumbs{display:flex!important;grid-column:1;grid-row:2;flex-direction:row;height:auto;overflow-x:auto;overflow-y:hidden;gap:8px;padding:0 16px 8px;order:2}
   .thumbs .gallery-thumb{flex:0 0 76px;height:76px}
   .pdp .main{grid-row:1;order:1}
   .pdp .info{grid-row:3;order:3}
