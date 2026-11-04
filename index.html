@@ -375,6 +375,14 @@ alt=""></noscript>
   function updateButton() { button.classList.toggle('is-visible', window.scrollY > 600); }
   window.addEventListener('scroll', updateButton, { passive: true });
   button.addEventListener('click', function () {
+    if (typeof window.senmiTrack === 'function') {
+      window.senmiTrack('select_content', {
+        content_type: 'navigation',
+        content_id: 'back_to_top',
+        placement: 'floating',
+        destination_section: 'page_top'
+      });
+    }
     window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
   });
   updateButton();

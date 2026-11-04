@@ -157,7 +157,16 @@
       });
     });
     addToCart.addEventListener('click', function () { addSelectionToCart('add_to_cart'); });
-    buyNow.addEventListener('click', function () { addSelectionToCart('buy_now'); });
+    buyNow.addEventListener('click', function () {
+      var item = cartItem(quantity);
+      track('buy_now_click', {
+        placement: 'product_detail',
+        currency: 'KRW',
+        value: totalPrice(quantity),
+        items: [item]
+      });
+      addSelectionToCart('buy_now');
+    });
     updateProductSummary();
   }
 
