@@ -60,7 +60,7 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 /* 포토 리뷰 + 요약 */
 .w{max-width:1280px;margin:0 auto}
 .rstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px;padding:0 0}
-.review-card{display:block;width:100%;padding:0;border:0;background:none;text-align:left;color:inherit;font:inherit;cursor:pointer}.rstrip .pic{aspect-ratio:1;border-radius:4px;overflow:hidden}.review-card:hover .pic,.review-card:focus-visible .pic{outline:3px solid var(--pt);outline-offset:2px}.rstrip p{font-size:13px;margin:6px 0 0}.review-meta{display:flex;align-items:center;gap:8px;margin-top:6px}.review-stars{color:#F2A9A1}.review-author{color:var(--sub);font-size:11px}
+.review-card{display:block;width:100%;min-width:0;padding:0;border:0;background:none;text-align:left;color:inherit;font:inherit;cursor:pointer}.rstrip .pic{aspect-ratio:1;border-radius:4px;overflow:hidden}.review-card:hover .pic,.review-card:focus-visible .pic{outline:3px solid var(--pt);outline-offset:2px}.rstrip p{font-size:13px;margin:6px 0 0}.review-meta{display:flex;align-items:center;gap:8px;margin-top:6px}.review-stars{color:#F2A9A1}.review-author{color:var(--sub);font-size:11px}
 .sum{display:grid;grid-template-columns:240px 1fr;border-top:2px solid var(--ink);margin-top:50px;padding:30px 0;border-bottom:1px solid var(--line)}
 .sum .sc{text-align:center;border-right:1px solid var(--line)}.sum .sc b{font-size:28px}.sum .sc b:before{content:"★";color:#F2A9A1}
 .sum .bars{padding-left:30px}.sum .bars div{display:grid;grid-template-columns:70px 1fr 50px;gap:14px;align-items:center;font-size:13px;margin:4px 0}
@@ -91,18 +91,19 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .field input,.field select{width:100%;height:46px;border:1px solid #ccc;padding:0 14px;font:inherit}
 .apply .safe-note{margin:14px 0}
 .submit{width:100%;height:48px;border:0;border-radius:999px;background:#000;color:#fff;font-weight:600}
-.notice{max-width:1240px;margin:70px auto 0;width:100%;border-collapse:collapse;font-size:14px}
-.notice th,.notice td{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px;text-align:left}.notice th{width:260px;font-weight:500;background:#FAFAFA}
+.notice{max-width:1000px;margin:70px auto 0;width:calc(100% - 40px);border-collapse:collapse;table-layout:fixed;font-size:14px}
+.notice th,.notice td{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px;text-align:left;overflow-wrap:anywhere}.notice th{width:180px;font-weight:500;background:#FAFAFA}
+.back-to-top{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom));z-index:90;width:48px;height:48px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--pt);color:#fff;font-size:22px;box-shadow:0 8px 24px rgba(31,34,48,.2);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .2s,transform .2s,visibility .2s}.back-to-top.is-visible{opacity:1;visibility:visible;transform:none}.back-to-top:hover,.back-to-top:focus-visible{background:#c95b54;outline:3px solid var(--soft);outline-offset:2px}body.modal-lock .back-to-top{opacity:0;visibility:hidden}
 .ft{background:var(--soft);margin-top:80px;padding:50px 30px;font-size:12px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
 .ft b{display:block;margin-bottom:10px}.ft a{display:block}
 .review-modal .modal-box{max-width:720px}.review-modal-image{width:100%;max-height:52vh;object-fit:cover;border-radius:12px;margin:12px 0}.review-modal-author{color:var(--sub);font-size:12px;font-weight:700;margin:0 0 6px}.review-modal-copy{color:var(--sub);margin-bottom:18px}.review-modal-nav{display:flex;gap:10px}.review-modal-nav button{flex:1;height:44px;border:1px solid var(--line);border-radius:999px;background:#fff;font:inherit;font-weight:600;cursor:pointer}.review-modal-close{position:absolute;right:18px;top:16px;width:38px;height:38px;border:0;border-radius:50%;background:#ececf0;font-size:22px;cursor:pointer}.review-modal .modal-box{position:relative}
 @media (max-width:1100px){.pdp{grid-template-columns:1fr 360px}.thumbs{display:none}.main{height:auto;aspect-ratio:1}.w{padding:0 20px}}
 @media (max-width:860px){
   .hd{padding:0 16px;font-size:13px}.hd nav{display:none}.hd{grid-template-columns:1fr auto 1fr}.hd .logo{font-size:30px}
-  .pdp{grid-template-columns:1fr;padding:0}.info{padding:20px 16px}.rstrip{grid-template-columns:repeat(2,1fr)}.sum{grid-template-columns:1fr}.sum .sc{border:0}.sum .bars{padding:20px 0 0}
+  .pdp{grid-template-columns:1fr;padding:0}.info{padding:20px 16px}.w{padding:0 16px;box-sizing:border-box}.rstrip{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sum{grid-template-columns:1fr}.sum .sc{border:0}.sum .bars{padding:20px 0 0}
   .price-row{gap:12px}.price-row.final strong{font-size:20px}.quantity-picker{padding:16px}.shipping-progress{padding:14px 12px}
   .blk{padding:50px 20px}.blk h3{font-size:22px}.blk .pic{height:280px}.ic4{grid-template-columns:repeat(2,1fr);row-gap:16px}
-  .how .row,.apply{grid-template-columns:1fr;padding:0 20px;gap:24px}.soc .row{padding:0 16px}.soc .row div{flex-basis:min(76vw,320px)}.rec{grid-template-columns:1fr}.rec .t{padding:40px 20px}.rec .pic{height:300px}.ft{grid-template-columns:1fr}
+  .how .row,.apply{grid-template-columns:1fr;padding:0 20px;gap:24px}.soc .row{padding:0 16px}.soc .row div{flex-basis:min(76vw,320px)}.rec{grid-template-columns:1fr}.rec .t{padding:40px 20px}.rec .pic{height:300px}.notice{width:calc(100% - 32px);margin-top:50px;font-size:12px}.notice th,.notice td{padding:10px 8px;vertical-align:top}.notice th{width:84px}.back-to-top{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px}.ft{grid-template-columns:1fr}
 }
 
 /* 실제 이미지 및 상품 갤러리 */
@@ -187,9 +188,9 @@ alt=""></noscript>
   <img src="assets/images/detail-01.jpg" alt="화잘먹 수분 패치 소개와 애플 리셋 패치를 볼에 붙인 모델" width="860" height="1641">
   <img src="assets/images/detail-02.jpg" alt="애플 리셋 패치 사용 후기와 사과 위 제품 용기" width="860" height="2287" loading="lazy">
   <img src="assets/images/detail-03.jpg" alt="속건조와 피부 고민을 확인하는 피부 컨디션 체크리스트" width="860" height="1286" loading="lazy">
-  <img src="assets/images/detail-04.jpg" alt="수분 진정 장벽 케어 포인트와 애플 리셋 패치 제품 연출" width="848" height="2002" loading="lazy">
+  <img src="assets/images/detail-04.jpg" alt="수분 진정 장벽 케어 포인트와 애플 리셋 패치 제품 연출" width="858" height="2002" loading="lazy">
   <img src="assets/images/detail-05.jpg" alt="세라마이드 판테놀 사과 추출물 히알루론산을 담은 집중 수분 케어" width="860" height="2141" loading="lazy">
-  <img src="assets/images/detail-06.png" alt="히알루론산 판테놀 세라마이드 사과 추출물의 4중 수분 레이어링" width="860" height="1939" loading="lazy">
+  <img src="assets/images/detail-06.jpg" alt="히알루론산 판테놀 세라마이드 사과 추출물의 4중 수분 레이어링" width="860" height="1939" loading="lazy">
   <img src="assets/images/detail-07.jpg" alt="애플 리셋 패치 사용 전후 건조함과 속당김 개선 비교" width="860" height="1107" loading="lazy">
   <img src="assets/images/detail-08.jpg" alt="볼에 초밀착 하이드로겔 패치를 붙이고 사과를 든 모델" width="860" height="1786" loading="lazy">
   <img src="assets/images/detail-09.jpg" alt="시간이 지날수록 투명해지는 보습 하이드로겔의 밀착력" width="860" height="2223" loading="lazy">
@@ -203,9 +204,11 @@ alt=""></noscript>
 <section class="soc"><h2>As Seen on Social</h2><div class="social-viewport" tabindex="0" aria-label="소셜 피드 이미지 슬라이더"><div class="row">
   <div><img src="assets/images/social-01.jpg" alt="애플 패치를 붙이고 음악을 듣는 모습"></div>
   <div><img src="assets/images/social-02.jpg" alt="애플 패치를 붙이고 외출을 준비하는 모습"></div>
+  <div><img src="assets/images/social-06.png" alt="사과와 물잔 옆에 놓인 애플 리셋 패치 제품"></div>
   <div><img src="assets/images/social-03.jpg" alt="애플 패치를 붙이고 햇빛 아래에서 셀카를 찍는 모습"></div>
   <div><img src="assets/images/social-04.jpg" alt="애플 패치를 붙인 욕실 거울 셀카"></div>
-  <div><img src="assets/images/social-05.jpg" alt="애플 패치를 붙이고 휴식하는 모습"></div>
+  <div><img src="assets/images/social-05.png" alt="잠옷을 입고 양 볼에 애플 패치를 붙인 모습"></div>
+  <div><img src="assets/images/social-07.png" alt="사과와 물잔 옆 유리 접시에 놓인 애플 패치"></div>
 </div></div></section>
 
 <section class="rec"><div class="t"><h2>이런 분께 추천드려요</h2><small>recommended for</small><ul><li>머리카락이 붙고 에센스가 뚝뚝 흐를 때</li><li>눈가 패치로는 볼까지 챙기기 어려울 때</li><li>붙이고 가만히 누워 있을 시간이 없을 때</li><li>팩 꺼낼 기운이 없는 날</li></ul></div><div class="pic"><img src="assets/images/recommend-01.jpg" alt="볼에 애플 패치를 붙인 모델"></div></section>
@@ -225,10 +228,11 @@ alt=""></noscript>
     <button class="submit" type="submit" id="cta-submit">애플 패치 소식 받기</button>
   </form>
 </section>
-<table class="notice"><tr><th>제품명</th><td>senmi Apple Reset Patch</td></tr><tr><th>용량 및 중량</th><td>60매</td></tr><tr><th>전성분</th><td>정제수, 글리세린, 부틸렌글라이콜, 소듐하이알루로네이트, 판테놀, 사과추출물, 세라마이드엔피 <small>(제품 기획 기준 주요 성분)</small></td></tr><tr><th>사용 시 주의사항</th><td>사용 중 또는 사용 후 붉은 반점, 부어오름, 가려움증 등 이상 증상이 나타나면 사용을 중단하고 전문의와 상담하세요. 상처가 있는 부위에는 사용하지 마세요. 어린이의 손이 닿지 않는 곳과 직사광선을 피해 보관하고, 눈에 들어갔을 때는 즉시 물로 씻어 주세요. 한 번 사용한 패치는 재사용하지 마세요.</td></tr></table>
+<table class="notice"><tr><th>제품명</th><td>senmi Apple Reset Patch</td></tr><tr><th>용량</th><td>60매</td></tr><tr><th>전성분</th><td>정제수, 글리세린, 부틸렌글라이콜, 소듐하이알루로네이트, 판테놀, 사과추출물, 세라마이드엔피 <small>(제품 기획 기준 주요 성분)</small></td></tr><tr><th>사용 시 주의사항</th><td>사용 중 또는 사용 후 붉은 반점, 부어오름, 가려움증 등 이상 증상이 나타나면 사용을 중단하고 전문의와 상담하세요. 상처가 있는 부위에는 사용하지 마세요. 어린이의 손이 닿지 않는 곳과 직사광선을 피해 보관하고, 눈에 들어갔을 때는 즉시 물로 씻어 주세요. 한 번 사용한 패치는 재사용하지 마세요.</td></tr></table>
 </main>
 
 <footer class="ft"><div><b>Information</b>이 페이지는 수업 실습용 페이지입니다. 실제 판매·결제는 이루어지지 않으며, 표기된 수치·후기는 예시입니다.</div><div><b>OFFICIAL</b><a href="#" data-privacy-open data-privacy-location="footer_official">개인정보 처리 안내</a></div><div><b>SHOP</b><a href="#product-option" data-track-content="footer_buy" data-track-type="cta" data-track-placement="footer">애플 리셋 패치 구매하기</a></div></footer>
+<button class="back-to-top" id="back-to-top" type="button" aria-label="맨 위로 이동">↑</button>
 <div class="modal" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title" aria-hidden="true">
   <div class="modal-box">
     <span class="badge">개인정보 미수집 · 즉시 파기</span>
@@ -261,25 +265,48 @@ alt=""></noscript>
   var mainImage = document.querySelector('.gallery-main-image');
   var thumbs = Array.prototype.slice.call(document.querySelectorAll('.gallery-thumb'));
   if (!mainImage || !thumbs.length) return;
-  function selectThumb(button) {
+  var gallery = document.querySelector('.pdp');
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var galleryPaused = false;
+  var galleryTimer;
+  function selectThumb(button, shouldTrack) {
     thumbs.forEach(function (item) { item.setAttribute('aria-selected', item === button ? 'true' : 'false'); });
     mainImage.src = button.getAttribute('data-gallery-src');
     var image = button.querySelector('img');
     if (image) mainImage.alt = image.alt;
-    if (typeof window.senmiTrack === 'function') {
+    if (shouldTrack && typeof window.senmiTrack === 'function') {
       var position = thumbs.indexOf(button) + 1;
       window.senmiTrack('select_content', { content_type: 'product_image', content_id: 'product_image_0' + position, content_position: position });
     }
   }
+  function scheduleGallery() {
+    clearTimeout(galleryTimer);
+    if (reducedMotion || galleryPaused || document.hidden) return;
+    galleryTimer = setTimeout(function () {
+      var current = thumbs.findIndex(function (item) { return item.getAttribute('aria-selected') === 'true'; });
+      selectThumb(thumbs[(current + 1) % thumbs.length], false);
+      scheduleGallery();
+    }, 4000);
+  }
   thumbs.forEach(function (button) {
-    button.addEventListener('click', function () { selectThumb(button); });
+    button.addEventListener('click', function () { selectThumb(button, true); scheduleGallery(); });
     button.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        selectThumb(button);
+        selectThumb(button, true);
+        scheduleGallery();
       }
     });
   });
+  ['mouseenter', 'focusin', 'touchstart'].forEach(function (name) {
+    gallery.addEventListener(name, function () { galleryPaused = true; clearTimeout(galleryTimer); }, { passive: true });
+  });
+  ['mouseleave', 'focusout', 'touchend', 'touchcancel'].forEach(function (name) {
+    gallery.addEventListener(name, function () { galleryPaused = false; scheduleGallery(); }, { passive: true });
+  });
+  document.addEventListener('visibilitychange', scheduleGallery);
+  window.addEventListener('pagehide', function () { clearTimeout(galleryTimer); }, { once: true });
+  scheduleGallery();
 })();
 </script>
 <script src="assets/analytics.js?v=20261028-3"></script>
@@ -297,11 +324,16 @@ alt=""></noscript>
   });
   var paused = false;
   var frame;
-  function animate() {
-    if (!paused) {
-      viewport.scrollLeft += 1;
-      if (viewport.scrollLeft >= row.scrollWidth / 2) viewport.scrollLeft -= row.scrollWidth / 2;
+  var lastTime = 0;
+  var firstClone = row.children[row.children.length / 2];
+  var loopWidth = firstClone.offsetLeft - row.children[0].offsetLeft;
+  function animate(time) {
+    if (!paused && !document.hidden) {
+      var elapsed = lastTime ? Math.min(time - lastTime, 50) : 0;
+      viewport.scrollLeft += elapsed * .045;
+      if (viewport.scrollLeft >= loopWidth) viewport.scrollLeft -= loopWidth;
     }
+    lastTime = time;
     frame = requestAnimationFrame(animate);
   }
   ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(function (name) {
@@ -310,8 +342,24 @@ alt=""></noscript>
   ['mouseleave', 'focusout', 'touchend', 'pointerup'].forEach(function (name) {
     viewport.addEventListener(name, function () { paused = false; }, { passive: true });
   });
+  window.addEventListener('resize', function () {
+    loopWidth = firstClone.offsetLeft - row.children[0].offsetLeft;
+  });
   frame = requestAnimationFrame(animate);
   window.addEventListener('pagehide', function () { cancelAnimationFrame(frame); }, { once: true });
+})();
+</script>
+<script>
+(function () {
+  var button = document.getElementById('back-to-top');
+  if (!button) return;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function updateButton() { button.classList.toggle('is-visible', window.scrollY > 600); }
+  window.addEventListener('scroll', updateButton, { passive: true });
+  button.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+  updateButton();
 })();
 </script>
 </body>
