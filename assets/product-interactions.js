@@ -9,6 +9,8 @@
   var SELECTION_KEY = 'senmi_last_selection';
   var UNIT_PRICE = 28000;
   var DISCOUNTED_UNIT_PRICE = 22400;
+  var FREE_SHIPPING_THRESHOLD = 50000;
+  var SHIPPING_FEE = 3000;
 
   function track(name, params) {
     if (typeof window.senmiTrack === 'function') window.senmiTrack(name, params);
@@ -16,6 +18,25 @@
 
   function totalPrice(quantity) {
     return (quantity >= 2 ? DISCOUNTED_UNIT_PRICE : UNIT_PRICE) * quantity;
+  }
+
+  function priceSummary(quantity) {
+    var regularTotal = UNIT_PRICE * quantity;
+    var discountedTotal = totalPrice(quantity);
+    var discount = regularTotal - discountedTotal;
+    var shipping = discountedTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    return {
+      regularTotal: regularTotal,
+      discount: discount,
+      discountedTotal: discountedTotal,
+      shipping: shipping,
+      finalTotal: discountedTotal + shipping,
+      remainingForFreeShipping: Math.max(FREE_SHIPPING_THRESHOLD - discountedTotal, 0)
+    };
+  }
+
+  function money(value) {
+    return Number(value).toLocaleString('ko-KR') + '원';
   }
 
   function cartItem(quantity) {
@@ -45,6 +66,14 @@
   });
 
   var totalValue = document.getElementById('product-total');
+  var totalQuantityValue = document.getElementById('product-total-quantity');
+  var regularTotalValue = document.getElementById('product-regular-total');
+  var discountValue = document.getElementById('product-discount');
+  var subtotalValue = document.getElementById('product-subtotal');
+  var shippingValue = document.getElementById('product-shipping');
+  var shippingMessage = document.getElementById('shipping-message');
+  var shippingProgress = document.getElementById('shipping-progress');
+  var shippingBar = document.getElementById('shipping-bar');
   var addToCart = document.getElementById('add-to-cart');
   var buyNow = document.getElementById('cta-main');
   var priceLabel = document.getElementById('product-price');
@@ -55,9 +84,25 @@
   var navigating = false;
 
   function updateProductSummary() {
+    var summary = priceSummary(quantity);
     quantityOutput.textContent = quantity;
     priceLabel.textContent = 'KRW ' + UNIT_PRICE.toLocaleString('ko-KR');
-    totalValue.textContent = totalPrice(quantity).toLocaleString('ko-KR') + '원 (총 ' + quantity + '개)';
+    totalQuantityValue.textContent = '총 ' + quantity + '개';
+    regularTotalValue.textContent = money(summary.regularTotal);
+    regularTotalValue.classList.toggle('is-discounted', summary.discount > 0);
+    discountValue.textContent = summary.discount ? '-' + money(summary.discount) : '0원';
+    subtotalValue.textContent = money(summary.discountedTotal);
+    shippingValue.textContent = summary.shipping ? money(summary.shipping) : '무료';
+    totalValue.textContent = money(summary.finalTotal);
+    if (summary.remainingForFreeShipping) {
+      shippingMessage.innerHTML = '<strong>' + money(summary.remainingForFreeShipping) + '</strong>만 더 구매하면 무료배송';
+    } else {
+      shippingMessage.innerHTML = '<strong>무료배송 혜택이 적용되었습니다</strong>';
+    }
+    var progress = Math.min(summary.discountedTotal / FREE_SHIPPING_THRESHOLD * 100, 100);
+    shippingBar.style.width = progress + '%';
+    shippingProgress.setAttribute('aria-valuenow', String(Math.min(summary.discountedTotal, FREE_SHIPPING_THRESHOLD)));
+    shippingProgress.setAttribute('aria-valuetext', summary.remainingForFreeShipping ? '무료배송까지 ' + money(summary.remainingForFreeShipping) : '무료배송 적용 완료');
   }
 
   function addSelectionToCart(buttonType) {
@@ -87,7 +132,7 @@
     location.href = 'cart.html';
   }
 
-  if (totalValue && addToCart && buyNow && decreaseQuantity && increaseQuantity && quantityOutput) {
+  if (totalValue && totalQuantityValue && regularTotalValue && discountValue && subtotalValue && shippingValue && shippingMessage && shippingProgress && shippingBar && addToCart && buyNow && decreaseQuantity && increaseQuantity && quantityOutput) {
     decreaseQuantity.addEventListener('click', function () {
       if (quantity === 1) return;
       var previous = quantity;
@@ -134,6 +179,7 @@
   if (reviewButtons.length && reviewModal) {
     var modalImage = document.getElementById('review-modal-image');
     var modalText = document.getElementById('review-modal-text');
+    var modalAuthor = document.getElementById('review-modal-author');
     var modalTitle = document.getElementById('review-modal-title');
     var closeButton = document.getElementById('review-modal-close');
     var previousButton = document.getElementById('review-previous');
@@ -147,6 +193,7 @@
       modalImage.src = image.src;
       modalImage.alt = image.alt;
       modalTitle.textContent = '애플 리셋 패치 후기 ' + (activeIndex + 1);
+      modalAuthor.textContent = '★★★★★  ' + card.dataset.reviewAuthor;
       modalText.textContent = card.dataset.reviewText;
       if (shouldTrack) {
         track('select_content', {
