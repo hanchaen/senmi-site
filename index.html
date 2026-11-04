@@ -42,7 +42,7 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .hd nav,.hd .r{display:flex;gap:20px}.hd .r{justify-content:flex-end}
 .hd .logo{font-size:42px;font-weight:600;letter-spacing:-.04em;line-height:1}
 /* 상품 */
-.pdp{display:grid;grid-template-columns:90px minmax(640px,740px) minmax(360px,1fr);gap:10px;padding:0 30px;align-items:start}
+.pdp{display:grid;grid-template-columns:90px 740px minmax(420px,520px);gap:10px;width:100%;max-width:1430px;margin:0 auto;padding:0 30px;box-sizing:border-box;align-items:start}
 .thumbs div{height:80px;margin-bottom:8px}
 .main{height:auto;aspect-ratio:4/3}
 .info{padding:0 0 0 24px}
@@ -146,7 +146,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 src="https://www.facebook.com/tr?id=1648001186818737&ev=PageView&noscript=1"
 alt=""></noscript>
 <!-- End Meta Pixel Code (noscript) -->
-<p class="top">출시 소식을 받으면 첫 구매 혜택을 안내해 드려요</p>
+<p class="top">♥senmi 애플 리셋 패치 2개 이상 구매 시 20% 할인♥</p>
 <header class="hd"><nav><a href="./" data-track-content="nav_home_text" data-track-type="navigation" data-track-placement="header_left">SENMI</a><a href="#detail" data-track-content="nav_story" data-track-type="navigation" data-track-placement="header_left">STORY</a><a href="#product-option" data-track-content="nav_shop" data-track-type="navigation" data-track-placement="header_left">SHOP</a></nav><a class="logo" href="./" aria-label="SENMI 홈" data-track-content="nav_home_logo" data-track-type="navigation" data-track-placement="header_center"><img src="assets/images/senmi-logo.png" alt="SENMI"></a><div class="r"><a href="#" data-privacy-open data-privacy-location="header">PRIVACY</a><a href="#product-option" id="cta-top" data-track-content="header_buy" data-track-type="cta" data-track-placement="header_right">구매하기</a></div></header>
 
 <main>
@@ -322,30 +322,48 @@ alt=""></noscript>
     clone.setAttribute('aria-hidden', 'true');
     row.appendChild(clone);
   });
-  var paused = false;
+  var hovered = false;
+  var interacting = false;
+  var keyboardFocused = false;
   var frame;
   var lastTime = 0;
   var firstClone = row.children[row.children.length / 2];
-  var loopWidth = firstClone.offsetLeft - row.children[0].offsetLeft;
+  var loopWidth = 0;
+  function calculateLoopWidth() {
+    loopWidth = firstClone.offsetLeft - row.children[0].offsetLeft;
+  }
+  function isPaused() {
+    return hovered || interacting || keyboardFocused || document.hidden || !loopWidth;
+  }
   function animate(time) {
-    if (!paused && !document.hidden) {
+    if (!isPaused()) {
       var elapsed = lastTime ? Math.min(time - lastTime, 50) : 0;
-      viewport.scrollLeft += elapsed * .045;
+      viewport.scrollLeft += elapsed * .06;
       if (viewport.scrollLeft >= loopWidth) viewport.scrollLeft -= loopWidth;
     }
     lastTime = time;
     frame = requestAnimationFrame(animate);
   }
-  ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(function (name) {
-    viewport.addEventListener(name, function () { paused = true; }, { passive: true });
+  viewport.addEventListener('mouseenter', function () { hovered = true; }, { passive: true });
+  viewport.addEventListener('mouseleave', function () { hovered = false; }, { passive: true });
+  viewport.addEventListener('pointerdown', function () { interacting = true; }, { passive: true });
+  ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(function (name) {
+    viewport.addEventListener(name, function () { interacting = false; }, { passive: true });
   });
-  ['mouseleave', 'focusout', 'touchend', 'pointerup'].forEach(function (name) {
-    viewport.addEventListener(name, function () { paused = false; }, { passive: true });
+  viewport.addEventListener('keydown', function () { keyboardFocused = true; });
+  viewport.addEventListener('focusout', function () { keyboardFocused = false; });
+  window.addEventListener('resize', calculateLoopWidth);
+  var images = Array.prototype.slice.call(row.querySelectorAll('img'));
+  Promise.all(images.map(function (image) {
+    if (image.complete) return Promise.resolve();
+    return new Promise(function (resolve) {
+      image.addEventListener('load', resolve, { once: true });
+      image.addEventListener('error', resolve, { once: true });
+    });
+  })).then(function () {
+    calculateLoopWidth();
+    frame = requestAnimationFrame(animate);
   });
-  window.addEventListener('resize', function () {
-    loopWidth = firstClone.offsetLeft - row.children[0].offsetLeft;
-  });
-  frame = requestAnimationFrame(animate);
   window.addEventListener('pagehide', function () { cancelAnimationFrame(frame); }, { once: true });
 })();
 </script>
