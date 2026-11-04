@@ -4,6 +4,7 @@
   var DISCOUNTED_UNIT_PRICE = 22400;
   var FREE_SHIPPING_THRESHOLD = 50000;
   var SHIPPING_FEE = 3000;
+  var FIRST_PURCHASE_FREE_SHIPPING = true;
   var cart = [];
   try { cart = JSON.parse(sessionStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
 
@@ -36,14 +37,14 @@
   function priceSummary() {
     var discountedTotal = totalValue();
     var regular = regularTotalValue();
-    var shippingFee = discountedTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
+    var shippingFee = FIRST_PURCHASE_FREE_SHIPPING ? 0 : (discountedTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE);
     return {
       regularTotal: regular,
       discount: regular - discountedTotal,
       discountedTotal: discountedTotal,
       shipping: shippingFee,
       finalTotal: discountedTotal + shippingFee,
-      remainingForFreeShipping: Math.max(FREE_SHIPPING_THRESHOLD - discountedTotal, 0)
+      remainingForFreeShipping: FIRST_PURCHASE_FREE_SHIPPING ? 0 : Math.max(FREE_SHIPPING_THRESHOLD - discountedTotal, 0)
     };
   }
   function totalQuantity() {
@@ -83,10 +84,10 @@
     subtotal.textContent = money(summary.discountedTotal);
     shipping.textContent = summary.shipping ? money(summary.shipping) : '무료';
     total.textContent = money(summary.finalTotal);
-    shippingMessage.innerHTML = summary.remainingForFreeShipping ? '<strong>' + money(summary.remainingForFreeShipping) + '</strong>만 더 구매하면 무료배송' : '<strong>무료배송 혜택이 적용되었습니다</strong>';
-    shippingBar.style.width = Math.min(summary.discountedTotal / FREE_SHIPPING_THRESHOLD * 100, 100) + '%';
-    shippingProgress.setAttribute('aria-valuenow', String(Math.min(summary.discountedTotal, FREE_SHIPPING_THRESHOLD)));
-    shippingProgress.setAttribute('aria-valuetext', summary.remainingForFreeShipping ? '무료배송까지 ' + money(summary.remainingForFreeShipping) : '무료배송 적용 완료');
+    shippingMessage.innerHTML = FIRST_PURCHASE_FREE_SHIPPING ? '<strong>첫 구매 무료배송 혜택이 적용되었습니다</strong>' : (summary.remainingForFreeShipping ? '<strong>' + money(summary.remainingForFreeShipping) + '</strong>만 더 구매하면 무료배송' : '<strong>무료배송 혜택이 적용되었습니다</strong>');
+    shippingBar.style.width = (FIRST_PURCHASE_FREE_SHIPPING ? 100 : Math.min(summary.discountedTotal / FREE_SHIPPING_THRESHOLD * 100, 100)) + '%';
+    shippingProgress.setAttribute('aria-valuenow', String(FIRST_PURCHASE_FREE_SHIPPING ? FREE_SHIPPING_THRESHOLD : Math.min(summary.discountedTotal, FREE_SHIPPING_THRESHOLD)));
+    shippingProgress.setAttribute('aria-valuetext', FIRST_PURCHASE_FREE_SHIPPING ? '첫 구매 무료배송 적용 완료' : (summary.remainingForFreeShipping ? '무료배송까지 ' + money(summary.remainingForFreeShipping) : '무료배송 적용 완료'));
   }
 
   function update(index, action) {
