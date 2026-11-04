@@ -123,13 +123,21 @@
       cart.push(item);
     }
     sessionStorage.setItem(CART_KEY, JSON.stringify(cart));
+    var moved = false;
+    function moveToCart() {
+      if (moved) return;
+      moved = true;
+      location.href = 'cart.html';
+    }
     track('add_to_cart', {
       currency: 'KRW',
       value: totalPrice(quantity),
       button_type: buttonType,
-      items: [item]
+      items: [item],
+      event_callback: moveToCart,
+      event_timeout: 800
     });
-    location.href = 'cart.html';
+    setTimeout(moveToCart, 900);
   }
 
   if (totalValue && totalQuantityValue && regularTotalValue && discountValue && subtotalValue && shippingValue && shippingMessage && shippingProgress && shippingBar && addToCart && buyNow && decreaseQuantity && increaseQuantity && quantityOutput) {
