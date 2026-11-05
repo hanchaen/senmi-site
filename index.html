@@ -131,8 +131,13 @@ body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:var
 .review-modal button:focus-visible{outline:2px solid #111111;outline-offset:3px}
 .review-modal-image{display:block;max-width:100%}
 @media(max-width:768px){
-  .rstrip{grid-template-columns:minmax(0,1fr);gap:32px;margin-left:4px;margin-right:4px;align-items:start}
-  .rstrip .review-card{width:100%;min-width:0;align-self:start}
+  .rstrip{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;row-gap:32px;margin-left:4px;margin-right:4px;align-items:start}
+  .rstrip .review-card{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;width:100%;min-width:0;align-self:start;box-sizing:border-box;overflow-wrap:anywhere}
+  .rstrip .pic{width:100%;aspect-ratio:1;flex:none}
+  .rstrip .review-meta{min-width:0;gap:4px;line-height:1.5}
+  .rstrip .review-stars{font-size:13px;white-space:nowrap;flex:none}
+  .rstrip .review-author{font-size:10px;white-space:nowrap;min-width:0}
+  .rstrip p{width:100%;box-sizing:border-box}
   .rstrip .pic img{width:100%;height:100%;object-fit:cover}
   .review-meta{align-items:center;flex-wrap:nowrap}
   .review-modal{padding:20px;box-sizing:border-box}
@@ -329,7 +334,7 @@ alt=""></noscript>
 </script>
 <script src="assets/analytics.js?v=20261028-3"></script>
 <script src="assets/privacy.js?v=20261028-3"></script>
-<script src="assets/product-interactions.js?v=20261105-reviews"></script>
+<script src="assets/product-interactions.js?v=20261105-reviews-2col"></script>
 <script>
 (function () {
   var viewport = document.querySelector('.social-viewport');
