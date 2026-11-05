@@ -205,6 +205,8 @@
     var previousButton = document.getElementById('review-previous');
     var nextButton = document.getElementById('review-next');
     var activeIndex = 0;
+    var reviewTitles = ['건조한 볼에 간단하게 붙이기 좋아요', '화장 전에 붙여두니 덜 들떠요', '탱글한 패치라 촉촉하게 붙어 있어요', '씻고 나서 당기는 볼에 붙여줘요'];
+    var previousBodyOverflow;
 
     function showReview(index, shouldTrack) {
       activeIndex = (index + reviewButtons.length) % reviewButtons.length;
@@ -212,7 +214,7 @@
       var image = card.querySelector('img');
       modalImage.src = image.src;
       modalImage.alt = image.alt;
-      modalTitle.textContent = '애플 리셋 패치 후기 ' + (activeIndex + 1);
+      modalTitle.textContent = reviewTitles[activeIndex];
       modalAuthor.textContent = '★★★★★  ' + card.dataset.reviewAuthor;
       modalText.textContent = card.dataset.reviewText;
       if (shouldTrack) {
@@ -226,6 +228,9 @@
 
     function openReview(index) {
       showReview(index, true);
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-lock');
       reviewModal.classList.add('open');
       reviewModal.setAttribute('aria-hidden', 'false');
       closeButton.focus();
@@ -235,6 +240,8 @@
       if (!reviewModal.classList.contains('open')) return;
       var id = reviewButtons[activeIndex].dataset.reviewId;
       reviewModal.classList.remove('open');
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.classList.remove('modal-lock');
       reviewModal.setAttribute('aria-hidden', 'true');
       track('review_modal_close', { content_id: id, close_method: method });
       reviewButtons[activeIndex].focus();
