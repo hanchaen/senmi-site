@@ -205,7 +205,7 @@
     var previousButton = document.getElementById('review-previous');
     var nextButton = document.getElementById('review-next');
     var activeIndex = 0;
-    var reviewTitles = ['건조한 볼에 간단하게 붙이기 좋아요', '화장 전에 붙여두니 덜 들떠요', '탱글한 패치라 촉촉하게 붙어 있어요', '씻고 나서 당기는 볼에 붙여줘요'];
+    var reviewTitles = ['핀셋이 있어서 꺼내기 편해요!', '화장 전에 붙여두니 좋네요 ㅎㅎ', '탱글한 패치라 촉촉하게 붙어 있어요', '씻고 나서 당기는 볼에 붙이면 좋아요!'];
     var previousBodyOverflow;
 
     function showReview(index, shouldTrack) {
