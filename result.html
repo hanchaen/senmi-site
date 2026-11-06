@@ -79,9 +79,26 @@ alt=""></noscript>
 </div></main>
 <script src="assets/analytics.js?v=20261028-3"></script>
 <script>
-document.getElementById('result-back-home').addEventListener('click', function () {
-  window.senmiTrack('select_content', { content_type: 'navigation', content_id: 'result_back_home', placement: 'result_page' });
-});
+(function () {
+  var PENDING_PURCHASE_KEY = 'senmi_pending_purchase';
+  var pendingPurchase = null;
+  try { pendingPurchase = JSON.parse(sessionStorage.getItem(PENDING_PURCHASE_KEY)); } catch (e) { pendingPurchase = null; }
+
+  if (pendingPurchase && pendingPurchase.transaction_id) {
+    var sentKey = 'senmi_purchase_sent_' + pendingPurchase.transaction_id;
+    if (!sessionStorage.getItem(sentKey)) {
+      sessionStorage.setItem(sentKey, '1');
+      window.senmiTrack('purchase', pendingPurchase);
+    }
+    sessionStorage.removeItem(PENDING_PURCHASE_KEY);
+  }
+
+  if (location.search) history.replaceState(null, '', 'result.html');
+
+  document.getElementById('result-back-home').addEventListener('click', function () {
+    window.senmiTrack('select_content', { content_type: 'navigation', content_id: 'result_back_home', placement: 'result_page' });
+  });
+})();
 </script>
 </body>
 </html>
