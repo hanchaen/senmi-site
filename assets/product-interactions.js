@@ -130,7 +130,7 @@
     function moveToCart() {
       if (moved) return;
       moved = true;
-      location.href = 'cart.html';
+      location.href = 'cart.html?v=20261106-1';
     }
     track('add_to_cart', {
       currency: 'KRW',
