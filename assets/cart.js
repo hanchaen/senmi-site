@@ -137,104 +137,17 @@
     track('select_content', { content_type: 'navigation', content_id: 'empty_cart_shop', placement: 'empty_cart' });
   });
 
-  var modal = document.getElementById('purchase-modal');
-  var form = document.getElementById('purchase-interest-form');
-  var closeButton = document.getElementById('purchase-modal-close');
-  var nameInput = document.getElementById('purchase-name');
-  var emailInput = document.getElementById('purchase-email');
-  var nameError = document.getElementById('purchase-name-error');
-  var emailError = document.getElementById('purchase-email-error');
-  var toast = document.getElementById('purchase-toast');
-  var toastTimer;
-  var formStarted = false;
-
-  function openPurchaseModal() {
-    track('purchase_intent', {
-      item_id: 'apple_reset_patch',
-      quantity: totalQuantity(),
-      value: priceSummary().finalTotal,
-      currency: 'KRW',
-      placement: 'cart'
-    });
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('modal-lock');
-    nameInput.focus();
-  }
-
-  function closePurchaseModal() {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('modal-lock');
-    nameError.textContent = '';
-    emailError.textContent = '';
-    purchaseButton.focus();
-  }
-
-  if (purchaseButton && modal && form) {
-    purchaseButton.addEventListener('click', openPurchaseModal);
-    closeButton.addEventListener('click', closePurchaseModal);
-    modal.addEventListener('click', function (event) {
-      if (event.target === modal) closePurchaseModal();
-    });
-    document.addEventListener('keydown', function (event) {
-      if (!modal.classList.contains('open')) return;
-      if (event.key === 'Escape') {
-        closePurchaseModal();
-        return;
-      }
-      if (event.key === 'Tab') {
-        var focusable = Array.prototype.slice.call(modal.querySelectorAll('input, button')).filter(function (element) { return !element.disabled; });
-        var first = focusable[0];
-        var last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    });
-    form.addEventListener('input', function () {
-      if (formStarted) return;
-      formStarted = true;
-      track('lead_form_start', { form_id: 'purchase_interest_form', form_name: 'cart_purchase_interest' });
-    });
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      nameError.textContent = nameInput.value.trim() ? '' : '이름을 입력해 주세요.';
-      emailError.textContent = emailInput.validity.valid && emailInput.value.trim() ? '' : '올바른 이메일 주소를 입력해 주세요.';
-      if (nameError.textContent || emailError.textContent) {
-        track('lead_form_submit_attempt', {
-          form_id: 'purchase_interest_form',
-          validation_status: 'invalid',
-          missing_field_count: Number(Boolean(nameError.textContent)) + Number(Boolean(emailError.textContent))
-        });
-        (nameError.textContent ? nameInput : emailInput).focus();
-        return;
-      }
-      track('lead_form_submit_attempt', {
-        form_id: 'purchase_interest_form',
-        validation_status: 'valid',
-        missing_field_count: 0
-      });
-      track('generate_lead', {
-        lead_source: 'cart_purchase_interest',
-        form_id: 'purchase_interest_form',
-        form_name: 'cart_purchase_interest',
-        currency: 'KRW',
-        value: priceSummary().finalTotal,
+  if (purchaseButton) {
+    purchaseButton.addEventListener('click', function () {
+      track('purchase_intent', {
         item_id: 'apple_reset_patch',
-        quantity: totalQuantity()
+        quantity: totalQuantity(),
+        value: priceSummary().finalTotal,
+        currency: 'KRW',
+        placement: 'cart',
+        destination: 'result'
       });
-      nameInput.value = '';
-      emailInput.value = '';
-      formStarted = false;
-      closePurchaseModal();
-      toast.hidden = false;
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () { toast.hidden = true; }, 3000);
+      window.location.href = 'https://hanchaen.github.io/senmi-site/result.html';
     });
   }
 })();
