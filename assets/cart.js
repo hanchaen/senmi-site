@@ -139,15 +139,34 @@
 
   if (purchaseButton) {
     purchaseButton.addEventListener('click', function () {
-      track('purchase_intent', {
-        item_id: 'apple_reset_patch',
-        quantity: totalQuantity(),
-        value: priceSummary().finalTotal,
-        currency: 'KRW',
-        placement: 'cart',
-        destination: 'result'
+      var summary = priceSummary();
+      var transactionId = 'SENMI-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+      var purchaseItems = cart.map(function (item) {
+        return {
+          item_id: item.item_id || 'apple_reset_patch',
+          item_name: 'Apple Reset Patch',
+          item_variant: item.item_variant || 'single',
+          price: item.quantity >= 2 ? DISCOUNTED_UNIT_PRICE : UNIT_PRICE,
+          quantity: item.quantity
+        };
       });
-      window.location.href = 'https://hanchaen.github.io/senmi-site/result.html';
+      var purchaseData = {
+        transaction_id: transactionId,
+        currency: 'KRW',
+        value: summary.finalTotal,
+        shipping: summary.shipping,
+        items: purchaseItems
+      };
+      sessionStorage.setItem('senmi_pending_purchase', JSON.stringify(purchaseData));
+      track('begin_checkout', {
+        currency: purchaseData.currency,
+        value: purchaseData.value,
+        items: purchaseData.items
+      });
+      var debugQuery = new URLSearchParams(location.search).get('ga_debug') === '1' ? '?ga_debug=1&purchase=20261106-1' : '?purchase=20261106-1';
+      setTimeout(function () {
+        window.location.href = 'https://hanchaen.github.io/senmi-site/result.html' + debugQuery;
+      }, 150);
     });
   }
 })();
