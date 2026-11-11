@@ -80,6 +80,7 @@
     if (typeof window.gtag === 'function') {
       leadParams.event_callback = moveToResult;
       leadParams.event_timeout = 1200;
+      if (window.sendLeadLog) window.sendLeadLog();
       window.gtag('event', 'generate_lead', leadParams);
       if (window.fbq) fbq('track', 'Lead');
       setTimeout(moveToResult, 1400);
